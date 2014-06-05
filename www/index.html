@@ -1,0 +1,314 @@
+<!DOCTYPE html> 
+<html>
+<head>
+	<title>BoMobil</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<link rel="stylesheet" href="resources/jquerymobile/themes/bomobil.min.css" />
+	<link rel="stylesheet" href="resources/jquerymobile/themes/jquery.mobile.icons.min.css" />
+	<link rel="stylesheet" href="resources/jquerymobile/jquery.mobile.structure-1.4.2.min.css" />
+	<link rel="stylesheet" href="resources/jquery/css/bomobil/jquery-ui-1.10.4.custom.min.css">
+	<script type="text/javascript" src="resources/jquery/js/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript" src="phonegap.js"></script>
+	<script type="text/javascript" src="resources/jquery/js/jquery-ui-1.10.4.custom.min.js"></script>
+	<script type="text/javascript" src="resources/jquery/js/jquery.ui.touch-punch.min.js"></script>
+	<script type="text/javascript" src="resources/lawnchair/lawnchair-0.6.1.min.js"></script>
+	<script type="text/javascript" src="resources/jquerymobile/jquery.mobile-1.4.2.min.js"></script>
+	<script type="text/javascript" src="resources/rindjael/rindjael.js"></script>
+	<script type="text/javascript" src="resources/localisation/jquery.localisation.min.js"></script>
+	<script type="text/javascript" src="custom.js"></script>
+	<script>
+
+		//Alert any error messages (debugging)
+			window.onerror = function(error, url, line) {
+				alert("Line "+line+": "+error);
+				};
+
+		//Check when deviceready event is fired
+			document.addEventListener("deviceready", onDeviceReady, false);
+		
+		//Bypass deviceready if Firefox
+			if (typeof InstallTrigger !== 'undefined')
+			{
+			onDeviceReady();
+			}
+
+	</script>
+	<style>
+		label {
+			font-weight: bold;
+			}
+		label:after {
+			content: ": "
+			}
+		.ui-progressbar {
+			position: relative;
+			}
+		.progress-label {
+			position: absolute;
+			left: 50%;
+			top: 4px;
+			font-weight: bold;
+			}
+		.bold {
+			font-weight: bold;
+			}
+		.ui-content {
+			padding-top:0px;
+			top:0px;
+			}
+
+		/* Facebook icon */
+			.ui-icon-facebook:after {
+				background-image: url("resources/icon/F_icon.svg");
+				background-size: 18px 18px;
+				}
+			/* Fallback */
+			.ui-nosvg .ui-icon-facebook:after {
+				background-image: url("resources/icon/F_icon.png");
+				background-size: 18px 18px;
+				}
+
+		/* Twitter icon */
+			.ui-icon-twitter:after {
+				background-image: url("resources/icon/twitter_icon.svg");
+				background-size: 18px 18px;
+				}
+			/* Fallback */
+			.ui-nosvg .ui-icon-twitter:after {
+				background-image: url("resources/icon/twitter_icon.png");
+				background-size: 18px 18px;
+				}
+
+	</style>
+</head>
+
+<body>
+
+<div data-role="page" id="splash">
+	<div role="main" class="ui-content">
+		<span lang-id="loading">LOADING</span>...
+		<div id="progressbar"><div class="progress-label"></div></div>
+		<div>
+			<span lang-id="fetching_pages">Fetching pages</span>&nbsp;<span id="page_count">1 / 1</span>
+		</div>
+		<div>
+			<span lang-id="updating">Updating</span>&nbsp;<span id="update_count">0 / 0</span>&nbsp;<span lang-id="objects"></span>
+		</div>
+		<div>
+			<span lang-id="downloading">Downloading</span>&nbsp;<span id="download_count">0 / 0</span>&nbsp;<span lang-id="objects"></span>
+		</div>
+	</div>
+</div>
+
+<div data-role="page" id="debug">
+	<div role="main" class="ui-content">
+		DEBUG PAGE
+		<a class="ui-btn" onclick="clearLawnchair();">Flush DB</a>
+		<button onclick="spinnerShow(true, function(){
+			window.plugins.socialsharing.shareViaFacebook('Message via Facebook', null, null, function() {console.log('share ok')}, function(errormsg){alert(errormsg)})})">msg via Facebook (with errcallback)</button>
+	</div>
+</div>
+
+<div data-role="page" id="searchPage">
+	<div role="main" class="ui-content">
+		<div data-role="collapsibleset" data-theme="a" data-content-theme="a" data-inset="false">
+			
+			<div data-role="collapsible">
+				
+				<h3 lang-id="rooms"><span>Rooms</span></h3>
+				<fieldset data-role="controlgroup" data-type="horizontal">
+					<legend><span lang-id="min">Min</span> / <span lang-id="max">Max</span></legend>
+					<label for=min_rooms lang-id="min">Min</label>
+					<select id=min_rooms>
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+						<option>5</option>
+					</select>
+					<label for=max_rooms lang-id="max">Max</label>
+					<select id=max_rooms>
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+						<option selected=selected>5</option>
+					</select>
+				</fieldset>
+			</div>
+
+			<div data-role="collapsible">
+				<h3 lang-id="cost">Cost</h3>
+				<fieldset data-role="controlgroup" data-type="horizontal">
+					<div class=ui-grid-a>
+						<div class=ui-block-a style='width:50%'>
+							<label for=min_cost lang-id="min">Min</label>
+						</div>
+						<div class=ui-block-b style='width:50%'>
+							<label for=max_cost lang-id="max">Max</label>
+						</div>
+					</div>
+					<div class=ui-grid-a>
+						<div class=ui-block-a style='width:50%'>
+							<input type=number pattern="[0-9]*" value=0 id=min_cost>
+						</div>
+						<div class=ui-block-b style='width:50%'>
+							<input type=number pattern="[0-9]*" value=20000 id=max_cost>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+
+			<div data-role="collapsible">
+				<h3 lang-id="size">Size</h3>
+				<fieldset data-role="controlgroup" data-type="horizontal">
+					<div class=ui-grid-a>
+						<div class=ui-block-a style='width:50%'>
+							<label for=min_size lang-id="min">Min</label>
+						</div>
+						<div class=ui-block-b style='width:50%'>
+							<label for=max_size lang-id="max">Max</label>
+						</div>
+					</div>
+					<div class=ui-grid-a>
+						<div class=ui-block-a style='width:50%'>
+							<input type=number value=0 id=min_size>
+						</div>
+						<div class=ui-block-b style='width:50%'>
+							<input type=number value=300 id=max_size>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+
+			<div data-role="collapsible">
+				<h3 lang-id="floor">Floor</h3>
+				<fieldset data-role="controlgroup" data-type="horizontal">
+					<legend><span lang-id="min">Min</span> / <span lang-id="max">Max</span></legend>
+					<label for=min_floor lang-id="min">Min</label>
+					<select id=min_floor>
+						<option>0</option>
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+						<option>5</option>
+						<option>6</option>
+						<option>7</option>
+						<option>8</option>
+						<option>9</option>
+						<option>10</option>
+						<option>11</option>
+						<option>12</option>
+					</select>
+					<label for=max_floor lang-id="max">Max</label>
+					<select id=max_floor>
+						<option>0</option>
+						<option>1</option>
+						<option>2</option>
+						<option>3</option>
+						<option>4</option>
+						<option>5</option>
+						<option>6</option>
+						<option>7</option>
+						<option>8</option>
+						<option>9</option>
+						<option>10</option>
+						<option>11</option>
+						<option selected=selected>12</option>
+					</select>
+				</fieldset>
+			</div>
+
+			<div data-role="collapsible">
+				<h3 lang-id="area">Area</h3>
+				<fieldset data-role="controlgroup">
+					<input type=checkbox id=area[1] value="Centrum" checked><label for=area[1] lang-id="centre">Centrum</label>
+					<input type=checkbox id=area[2] value="Hisingen" checked><label for=area[2]>Hisingen</label>
+					<input type=checkbox id=area[3] value="Kommuner nära Göteborg" checked><label for=area[3] lang-id="counties_near_gothenburg">Kommuner nära Göteborg</label>
+					<input type=checkbox id=area[4] value="Mölndal" checked><label for=area[4]>Mölndal</label>
+					<input type=checkbox id=area[5] value="Norr" checked><label for=area[5] lang-id="north">Norr</label>
+					<input type=checkbox id=area[6] value="Partille" checked><label for=area[6]>Partille</label>
+					<input type=checkbox id=area[7] value="Väster" checked><label for=area[7] lang-id="west">Väster</label>
+					<input type=checkbox id=area[8] value="Öster" checked><label for=area[8] lang-id="east">Öster</label>
+				</fieldset>
+			</div>
+
+			<div data-role="collapsible">
+				<h3 lang-id="available_from">Available from</h3>
+				<fieldset data-role="controlgroup">
+					<input data-role="date" type="date" id="available">
+				</fieldset>
+			</div>
+
+			<div data-role="collapsible">
+				<h3 lang-id="other">Other</h3>
+				<fieldset data-role="controlgroup">
+					<input type=checkbox id=icon[1] value="hlDisabilityAccessImg" checked><label for=icon[1] lang-id="disability_access">Tillgänglighet</label>
+					<input type=checkbox id=icon[2] value="hlNewlyProducedImg" checked><label for=icon[2] lang-id="newly_produced">Nyproduktion</label>
+					<input type=checkbox id=icon[3] value="hlSeniorImg" checked><label for=icon[3] lang-id="senior_apartment">Seniorboende</label>
+					<input type=checkbox id=icon[4] value="hlShorttimeImg" checked><label for=icon[4] lang-id="short_term_rental">Korttidsboende</label>
+					<input type=checkbox id=icon[5] value="hlStudentImg" checked><label for=icon[5] lang-id="student_apartment">Studentlägenhet</label>
+					<input type=checkbox id=icon[6] value="hlYouthImg" checked><label for=icon[6] lang-id="youth_apartment">Ungahem</label>
+					<input type=checkbox id=icon[7] value="hlDirectSearchImg" checked><label for=icon[7] lang-id="instant_move_in">Snabb inflyttning</label>
+					<input type=checkbox id=icon[8] value="hlMissingTentureImg" checked><label for=icon[8] lang-id="maintained_registration_date">Bibehållen registreringstid</label>
+				</fieldset>
+			</div>
+
+			<div data-role="collapsible">
+				<h3 lang-id="sort">Sort</h3>
+				<ul data-role="listview" data-inset="true" data-theme="a" id="sort_list">
+					<li class="ui-input-btn ui-btn ui-icon-bars ui-nodisc-icon ui-btn-icon-right" value="area" lang-id="area">Area</li>
+					<li class="ui-input-btn ui-btn ui-icon-bars ui-nodisc-icon ui-btn-icon-right" value="address" lang-id="address">Address</li>
+					<li class="ui-input-btn ui-btn ui-icon-bars ui-nodisc-icon ui-btn-icon-right" value="cost" lang-id="cost">Cost</li>
+					<li class="ui-input-btn ui-btn ui-icon-bars ui-nodisc-icon ui-btn-icon-right" value="rooms" lang-id="rooms">Rooms</li>
+					<li class="ui-input-btn ui-btn ui-icon-bars ui-nodisc-icon ui-btn-icon-right" value="interested" lang-id="interested">Interested</li>
+					<li class="ui-input-btn ui-btn ui-icon-bars ui-nodisc-icon ui-btn-icon-right" value="size" lang-id="size">Size</li>
+					<li class="ui-input-btn ui-btn ui-icon-bars ui-nodisc-icon ui-btn-icon-right" value="floor" lang-id="floor">Floor</li>
+				</ul>
+			</div>
+
+		</div>
+
+		<a class="ui-btn" href="#resultsPage" onclick="spinnerShow(true, function(){showResults()})" lang-id="search">Search</a>
+	</div>
+</div>
+
+<div data-role="page" id="resultsPage">
+	<div role="main" class="ui-content" data-tolerance=>
+	</div>
+	<div data-role="popup" id="mapPopup" data-overlay-theme="a" data-theme="a" data-corners="false" data-position-to="window">
+		<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+		<iframe id="mapIframe" src="map.html" width="480" height="320" seamless></iframe>
+	</div>
+	<div data-role="popup" id="imagePopup" data-overlay-theme="a" data-theme="a" data-corners="false" data-position-to="window">
+		<a href="#" data-rel="back" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+	</div>
+</div>
+
+<div data-role="page" id="userPage">
+	<div role="main" class="ui-content" data-tolerance=>
+		<label for=username lang-id="username">Username</label>
+		<input type=text id=username>
+		<label for=password lang-id="password">Password</label>
+		<input type=password id=password>
+		<a class="ui-btn" onclick="saveUserDetails()" lang-id="save">Save</a>
+		<label for=language_selector lang-id="language">Language</label>
+		<select id=language_selector>
+		</select>
+	</div>
+</div>
+
+<div data-role="footer" data-position="fixed" data-theme="a">
+	<div data-role="navbar">
+		<ul>
+			<li><a href="#searchPage" class="ui-state-persist" data-icon="search" data-transition="fade"></a></li>
+			<li><a href="#userPage" class="ui-state-persist" data-icon="user" data-transition="fade"></a></li>
+			<li><a href="#debug" class="ui-state-persist" data-icon="alert" data-transition="fade"></a></li>
+		</ul>
+	</div>
+</div>
+</body>
+</html>
