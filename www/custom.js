@@ -846,21 +846,6 @@ function onDeviceReady(){
 			setLawnchair("database_ver", database_ver);
 			}
 
-	//Set language
-		setLanguage();
-		$("#language_selector").change(function(){
-			setLanguage($(this).val());
-			});
-
-		//Populate language selector
-			$(available_languages).each(function(){
-				var option = $("<option>")
-					.appendTo($("#language_selector"))
-					.val(this.code)
-					.text(this.lable)
-					.prop("selected", (getLawnchair("language") == this.code ? true : false))
-				});
-
 	//Navbar/footer
 		$(function() {
 			$( "[data-role='navbar']" ).navbar({disabled: true});
@@ -885,16 +870,7 @@ function onDeviceReady(){
 		checkUUID();
 
 	//Set initial splash page
-		location.hash = "#splash";
-		$("#progressbar").progressbar({
-			value: 0,
-			change: function(){
-				$("#progressbar > .progress-label").text($("#progressbar").progressbar("value") + "%");
-				}
-			});
-		$("#progressbar").progressbar("value", 1);
-
-		spinnerShow(false, function(){fetchPages()});
+		location.hash = "#categoryPage";
 
 	//Hide navbar on input/textarea focus
 		$("input, textarea, select").on("focus", function(){
@@ -903,46 +879,6 @@ function onDeviceReady(){
 
 		$("input, textarea, select").on("blur", function(){
 			$("div[data-role='footer']").show();
-			});
-
-	//Popup events
-		$(document).on("popupbeforeposition", "#imagePopup, #pdfPopup, #mapPopup", function(){
-			
-			//Disable touch movement
-				$("body").on("touchmove", false);
-			 
-			// Set a max-height & max-width to make large images shrink to fit the screen.
-				var maxHeight = $(window).height() - 75 + "px";  // 68px: 2 * 15px for top/bottom tolerance, 38px for footer.
-				var maxWidth = $(window).width() - 30 + "px";  // 30px: 2 * 15px for left/right tolerance.
-				$("img.photo, iframe", this).css({
-					"max-height": maxHeight,
-					"max-width": maxWidth,
-					});
-
-			//If iframe (map popup), set height & width of iframe and map div (for Android)
-				$("iframe", this).css({
-					"height": maxHeight,
-					"width": maxWidth,
-					});
-				$("iframe", this).contents().find("#map_canvas").css({
-					"height": maxHeight,
-					"width": maxWidth,
-					});
-
-			//Set popup tolerance
-				$(this).popup("option", "tolerance", "15,15,53,15");
-
-			});
-
-		$(document).on("popupafteropen", "#imagePopup, #pdfPopup, #mapPopup", function(){
-			 spinnerplugin.hide();
-			})
-		
-		$(document).on("popupafterclose", "#imagePopup, #pdfPopup, #mapPopup", function(){
-			
-			//Enable touch movement
-				$("body").off("touchmove");
-
 			});
 
 	//Sort list
