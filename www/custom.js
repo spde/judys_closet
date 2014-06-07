@@ -834,7 +834,7 @@ function customAlert(message, vibrate){
 	}
 
 function onDeviceReady(){
-	
+	alert('device rdy');
 	//Add slight header margin for iOS 7
 		/*if (device.platform == 'iOS' && device.version >= '7.0') {
 			document.body.style.marginTop = "20px";
@@ -900,12 +900,14 @@ function onDeviceReady(){
 	}
 
 function fetchCategories(){
+	alert('initate fetchCategories');
 	$.ajax({
 		type: "POST",
 		url: "http://46.16.233.117/judys_closet/api.php?function=fetchCategories",
 		dataType: 'json',
 		cache: false,
 		success: function(returnData) {
+			alert(returnData);
 			$("#categories").empty();
 			$.each(returnData, function(key, value){
 				$("<li id="+key+"><a>"+value+"</a></li>").appendTo($("#categories")).click(function(){
