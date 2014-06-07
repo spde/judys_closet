@@ -17,6 +17,7 @@
 	<script type="text/javascript" src="resources/jquerymobile/jquery.mobile-1.4.2.min.js"></script>
 	<script type="text/javascript" src="resources/rindjael/rindjael.js"></script>
 	<script type="text/javascript" src="resources/localisation/jquery.localisation.min.js"></script>
+	<script type="text/javascript" src="resources/jqueryform/jquery.form.min.js"></script>
 	<script type="text/javascript" src="custom.js"></script>
 	<script>
 
@@ -116,7 +117,12 @@
 
 <div data-role="page" id="addItem" data-dialog="true">
 	<div role="main" class="ui-content">
-		<input type=file>
+		<form method="post" enctype="multipart/form-data" id="imageForm" action="http://46.16.233.117/judys_closet/api.php?function=addImage">
+			<input type=file id="imageFile" name="imageFile" style="display:none" onchange="uploadImage()" data-enhance="false" data-role="none">
+		</form>
+		<div id="imagePreview">
+			<input type=button value="Choose file" onclick="$('#imageFile').click()">
+		</div>
 		<input type=button value="Add" onclick="if ($('#category_name').val() != ''){addCategory()}">
 	</div>
 </div>

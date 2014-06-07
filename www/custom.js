@@ -834,7 +834,7 @@ function customAlert(message, vibrate){
 	}
 
 function onDeviceReady(){
-	alert('device rdy');
+	
 	//Add slight header margin for iOS 7
 		/*if (device.platform == 'iOS' && device.version >= '7.0') {
 			document.body.style.marginTop = "20px";
@@ -880,6 +880,8 @@ function onDeviceReady(){
 			fetchItems(active_category);
 			});
 
+		
+
 	//Hide navbar on input/textarea focus
 		$("input, textarea, select").on("focus", function(){
 			$("div[data-role='footer']").hide();
@@ -900,14 +902,13 @@ function onDeviceReady(){
 	}
 
 function fetchCategories(){
-	alert('initate fetchCategories');
+	
 	$.ajax({
 		type: "POST",
 		url: "http://46.16.233.117/judys_closet/api.php?function=fetchCategories",
 		dataType: 'json',
 		cache: false,
 		success: function(returnData) {
-			alert(returnData);
 			$("#categories").empty();
 			$.each(returnData, function(key, value){
 				$("<li id="+key+"><a>"+value+"</a></li>").appendTo($("#categories")).click(function(){
@@ -932,7 +933,6 @@ function fetchItems(category){
 		cache: false,
 		data: JSON.stringify(post_data),
 		success: function(returnData) {
-			alert(returnData);
 			$("#items").empty();
 			$.each(returnData, function(key, value){
 				$("<li id="+key+"><a>"+value+"</a></li>").appendTo($("#items")).click(function(){
@@ -981,6 +981,35 @@ function addItem(){
 			},
 		error: function(xhr, textStatus, error){
 			alert(xhr.statusText+", "+textStatus+", "+error);
+			},
+		});
+	}
+
+function uploadImage(){
+	$('#imageForm').ajaxSubmit({
+		beforeSend: function(){
+			$("#imagePreview").empty();
+			$("#imagePreview").append($("<div id=progressbar><div class=progress-label>......</div></div>"));
+			$("#progressbar").progressbar({
+				value: 0,
+				change: function(){
+					$("#progressbar .progress-label").text($(this).progressbar("value") + "%");
+					},
+				});
+			},
+		uploadProgress: function(event, position, total, percentComplete) {
+			$("#progressbar").progressbar({
+				value: percentComplete
+				});
+			},
+		complete: function(xhr){
+			$("#imagePreview").empty();
+			img = $("<img>");
+			img.attr("src", "http://46.16.233.117/judys_closet/api.php?function=showImage&id="+xhr.responseText);
+			img.click(function(){
+				$('#imageFile').click();
+				})
+			$("#imagePreview").append(img);
 			},
 		});
 	}
