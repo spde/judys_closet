@@ -836,9 +836,9 @@ function customAlert(message, vibrate){
 function onDeviceReady(){
 	
 	//Add slight header margin for iOS 7
-		if (device.platform == 'iOS' && device.version >= '7.0') {
+		/*if (device.platform == 'iOS' && device.version >= '7.0') {
 			document.body.style.marginTop = "20px";
-			}
+			}*/
 
 	//Flush database if not latest version
 		if (getLawnchair("database_ver") != database_ver){
@@ -867,10 +867,18 @@ function onDeviceReady(){
 			});
 
 	//Check UUID
-		checkUUID();
+		//checkUUID();
 
 	//Set initial splash page
-		location.hash = "#categoryPage";
+		location.hash = "#startPage";
+
+	//Fetch categories
+		fetchCategories();
+
+	//Listeners
+		$(document).on("pagebeforeshow", "#categoryPage", function(event, ui){
+			fetchItems(active_category);
+			});
 
 	//Hide navbar on input/textarea focus
 		$("input, textarea, select").on("focus", function(){
@@ -881,28 +889,6 @@ function onDeviceReady(){
 			$("div[data-role='footer']").show();
 			});
 
-	//Sort list
-		$(document).on("pagecreate", "#searchPage", function(){
-			
-			//Initiate sortable list
-				$("#sort_list").sortable({
-					axis: "y",
-					start: function(event, ui){
-						//Style active item
-							ui.item.addClass("ui-btn-active");
-						},
-					stop: function(event, ui){
-						//Unstyle active item
-							ui.item.removeClass("ui-btn-active");
-						
-						// Refresh list to the end of sort to have a correct display
-							$(this).listview("refresh");
-						},
-					});
-				$("#sort_list").disableSelection();
-			
-			});
-
 	//Show page loader during page switch
 		$(document).on("pagebeforeshow", function(){
 			//spinnerShow(true);
@@ -911,6 +897,90 @@ function onDeviceReady(){
 		$(document).on("pageshow", function(){
 			//spinnerplugin.hide();
 			});
+	}
+
+function fetchCategories(){
+	$.ajax({
+		type: "POST",
+		url: "http://46.16.233.117/judys_closet/api.php?function=fetchCategories",
+		dataType: 'json',
+		cache: false,
+		success: function(returnData) {
+			$("#categories").empty();
+			$.each(returnData, function(key, value){
+				$("<li id="+key+"><a>"+value+"</a></li>").appendTo($("#categories")).click(function(){
+					active_category = $(this).attr("id");
+					location.hash = "categoryPage";
+					});
+				})
+			$("#categories").listview("refresh");
+			},
+		error: function(xhr, textStatus, error){
+			alert(xhr.statusText+", "+textStatus+", "+error)
+			},
+		});
+	}
+
+function fetchItems(category){
+	post_data = [category];
+	$.ajax({
+		type: "POST",
+		url: "http://46.16.233.117/judys_closet/api.php?function=fetchItems",
+		dataType: 'json',
+		cache: false,
+		data: JSON.stringify(post_data),
+		success: function(returnData) {
+			alert(returnData);
+			$("#items").empty();
+			$.each(returnData, function(key, value){
+				$("<li id="+key+"><a>"+value+"</a></li>").appendTo($("#items")).click(function(){
+					active_category = $(this).attr("id");
+					location.hash = "categoryPage";
+					});
+				})
+			$("#items").listview("refresh");
+			},
+		error: function(xhr, textStatus, error){
+			alert(xhr.statusText+", "+textStatus+", "+error)
+			},
+		});
+	}
+
+function addCategory(){
+	post_data = {'category_name':$("#category_name").val()};
+	$.ajax({
+		type: "POST",
+		url: "http://46.16.233.117/judys_closet/api.php?function=addCategory",
+		dataType: 'text',
+		cache: false,
+		data: JSON.stringify(post_data),
+		success: function(returnData) {
+			$("#category_name").val(null);
+			location.hash = "#categoryPage";
+			active_category = returnData;
+			},
+		error: function(xhr, textStatus, error){
+			alert(xhr.statusText+", "+textStatus+", "+error);
+			},
+		});
+	}
+
+function addItem(){
+	post_data = {'category':active_category};
+	$.ajax({
+		type: "POST",
+		url: "http://46.16.233.117/judys_closet/api.php?function=addItem",
+		dataType: 'text',
+		cache: false,
+		data: JSON.stringify(post_data),
+		success: function(returnData) {
+			location.hash = "#addItem";
+			active_item = returnData;
+			},
+		error: function(xhr, textStatus, error){
+			alert(xhr.statusText+", "+textStatus+", "+error);
+			},
+		});
 	}
 
 function spinnerShow(overlay, callback){
