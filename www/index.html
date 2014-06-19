@@ -36,9 +36,8 @@
 			}
 
 		//Active category & item
-			active_category = 0;
-			active_item = 0;
-
+			active_category = null;
+			active_item = null;
 	</script>
 	<style>
 		label {
@@ -59,10 +58,10 @@
 		.bold {
 			font-weight: bold;
 			}
-		.ui-content {
+		/*.ui-content {
 			padding-top:0px;
 			top:0px;
-			}
+			}*/
 
 		/* Facebook icon */
 			.ui-icon-facebook:after {
@@ -85,7 +84,6 @@
 				background-image: url("resources/icon/twitter_icon.png");
 				background-size: 18px 18px;
 				}
-
 	</style>
 </head>
 
@@ -123,7 +121,13 @@
 		<div id="imagePreview">
 			<input type=button value="Choose file" onclick="$('#imageFile').click()">
 		</div>
-		<input type=button value="Add" onclick="if ($('#category_name').val() != ''){addCategory()}">
+		<div id="attributes"></div>
+	</div>
+</div>
+
+<div data-role="page" id="addAttribute" data-dialog="true">
+	<div role="main" class="ui-content">
+		<div id="existing_attributes"></div>
 	</div>
 </div>
 

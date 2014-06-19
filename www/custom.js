@@ -30,7 +30,7 @@
 		name: "bomobil_db"
 		},
 		function(store){});
-
+tempval = null;
 function clearLawnchair(){
 	store.nuke();
 	}
@@ -133,7 +133,7 @@ function fetchPages(){
 			dataType: 'html',
 			cache: true,
 
-			success: function(returnData) {
+			success: function(returnData){
 				updateProgress(5);
 				
 				//Place data in array
@@ -579,7 +579,7 @@ function addResultObject(object, collapsiblesetdiv){
 							"tolerance": "15,15,15,15",
 							})
 							.popup({
-								afterclose: function() {
+								afterclose: function(){
 									$("#mapIframe").get(0).contentWindow.removeAddressMarker();
 									},
 								});
@@ -602,7 +602,7 @@ function addResultObject(object, collapsiblesetdiv){
 										"transition": "fade",
 										})
 										.popup({
-											afterclose: function() {
+											afterclose: function(){
 												$("#image_object").remove();
 												},
 											});
@@ -636,7 +636,7 @@ function addResultObject(object, collapsiblesetdiv){
 				.click({id: object["id"], address: object["address"]}, function(event){
 					spinnerShow(true, function(){
 						
-						window.plugins.socialsharing.shareViaFacebook(event.data.address, null, "http://www.boplats.se/HSS/Object/object_details.aspx?objectguid="+event.data.id, function() {console.log('share ok'); spinnerplugin.hide();}, function(errormsg){customAlert(errormsg); spinnerplugin.hide();});
+						window.plugins.socialsharing.shareViaFacebook(event.data.address, null, "http://www.boplats.se/HSS/Object/object_details.aspx?objectguid="+event.data.id, function(){console.log('share ok'); spinnerplugin.hide();}, function(errormsg){customAlert(errormsg); spinnerplugin.hide();});
 						alert('callback called');
 						});
 					});
@@ -647,7 +647,7 @@ function addResultObject(object, collapsiblesetdiv){
 				.addClass("ui-btn ui-shadow ui-corner-all ui-icon-twitter ui-btn-icon-notext")
 				.click({id: object["id"], address: object["address"]}, function(event){
 					spinnerShow(true, function(){
-						window.plugins.socialsharing.shareViaTwitter(event.data.address, null, "http://www.boplats.se/HSS/Object/object_details.aspx?objectguid="+event.data.id, function() {console.log('share ok'); spinnerplugin.hide();}, function(errormsg){customAlert(errormsg); spinnerplugin.hide();});
+						window.plugins.socialsharing.shareViaTwitter(event.data.address, null, "http://www.boplats.se/HSS/Object/object_details.aspx?objectguid="+event.data.id, function(){console.log('share ok'); spinnerplugin.hide();}, function(errormsg){customAlert(errormsg); spinnerplugin.hide();});
 						})
 					});
 
@@ -761,7 +761,7 @@ function login(callback){
 			data: data,
 			url: "https://www.boplats.se/user/login_hs.aspx?ReturnUrl=/HSS/Default.aspx",
 			dataType: 'html',
-			beforesend: function() {
+			beforesend: function(){
 				$.mobile.loader("show");
 				},
 			success: processLoginForm(),
@@ -836,9 +836,9 @@ function customAlert(message, vibrate){
 function onDeviceReady(){
 	
 	//Add slight header margin for iOS 7
-		if (device.platform == 'iOS' && device.version >= '7.0') {
+		/*if (device.platform == 'iOS' && device.version >= '7.0'){
 			document.body.style.marginTop = "20px";
-			}
+			}*/
 
 	//Flush database if not latest version
 		if (getLawnchair("database_ver") != database_ver){
@@ -847,7 +847,7 @@ function onDeviceReady(){
 			}
 
 	//Navbar/footer
-		$(function() {
+		$(function(){
 			$( "[data-role='navbar']" ).navbar({disabled: true});
 			$( "[data-role='header'], [data-role='footer']" ).toolbar();
 		});
@@ -901,14 +901,13 @@ function onDeviceReady(){
 			});
 	}
 
-function fetchCategories(){
-	
+function fetchCategories(){	
 	$.ajax({
 		type: "POST",
 		url: "http://46.16.233.117/judys_closet/api.php?function=fetchCategories",
 		dataType: 'json',
 		cache: false,
-		success: function(returnData) {
+		success: function(returnData){
 			$("#categories").empty();
 			$.each(returnData, function(key, value){
 				$("<li id="+key+"><a>"+value+"</a></li>").appendTo($("#categories")).click(function(){
@@ -925,14 +924,13 @@ function fetchCategories(){
 	}
 
 function fetchItems(category){
-	post_data = [category];
 	$.ajax({
 		type: "POST",
 		url: "http://46.16.233.117/judys_closet/api.php?function=fetchItems",
 		dataType: 'json',
 		cache: false,
-		data: JSON.stringify(post_data),
-		success: function(returnData) {
+		data: {category:category},
+		success: function(returnData){
 			$("#items").empty();
 			$.each(returnData, function(key, value){
 				$("<li id="+key+"><a>"+value+"</a></li>").appendTo($("#items")).click(function(){
@@ -949,14 +947,13 @@ function fetchItems(category){
 	}
 
 function addCategory(){
-	post_data = {'category_name':$("#category_name").val()};
 	$.ajax({
 		type: "POST",
 		url: "http://46.16.233.117/judys_closet/api.php?function=addCategory",
 		dataType: 'text',
 		cache: false,
-		data: JSON.stringify(post_data),
-		success: function(returnData) {
+		data: {'category_name':$("#category_name").val()},
+		success: function(returnData){
 			$("#category_name").val(null);
 			location.hash = "#categoryPage";
 			active_category = returnData;
@@ -968,25 +965,27 @@ function addCategory(){
 	}
 
 function addItem(){
-	post_data = {'category':active_category};
+	/*post_data = {'category':active_category};
 	$.ajax({
 		type: "POST",
 		url: "http://46.16.233.117/judys_closet/api.php?function=addItem",
 		dataType: 'text',
 		cache: false,
 		data: JSON.stringify(post_data),
-		success: function(returnData) {
+		success: function(returnData){*/
 			location.hash = "#addItem";
-			active_item = returnData;
+			/*active_item = returnData;
 			},
 		error: function(xhr, textStatus, error){
 			alert(xhr.statusText+", "+textStatus+", "+error);
 			},
-		});
+		});*/
 	}
 
 function uploadImage(){
 	$('#imageForm').ajaxSubmit({
+		data: {'category':active_category, 'item':active_item},
+		dataType: 'json',
 		beforeSend: function(){
 			$("#imagePreview").empty();
 			$("#imagePreview").append($("<div id=progressbar><div class=progress-label></div></div>"));
@@ -997,21 +996,258 @@ function uploadImage(){
 					},
 				});
 			},
-		uploadProgress: function(event, position, total, percentComplete) {
+		uploadProgress: function(event, position, total, percentComplete){
 			$("#progressbar").progressbar({
 				value: percentComplete
 				});
 			},
-		complete: function(xhr){
+		success: function(returnData){
+			active_item = returnData.item;
 			$("#imagePreview").empty();
 			img = $("<img>");
-			img.attr("src", "http://46.16.233.117/judys_closet/api.php?function=showImage&id="+xhr.responseText);
+			img.attr("src", "http://46.16.233.117/judys_closet/api.php?function=showImage&id="+returnData.image);
+			img.css("width", "100%");
 			img.click(function(){
 				$('#imageFile').click();
 				})
 			$("#imagePreview").append(img);
+			generateAttributeList();
 			},
 		});
+	}
+
+function generateAttributeList(extra_attribute){
+
+	collapsibleset = $("<div>");
+	collapsibleset.attr("id", "collapsibleset");
+	collapsibleset.attr("data-role", "collapsibleset");
+	
+	//New attribute
+		collapsiblenew = $("<div>");
+		collapsiblenew.attr("data-role", "collapsible");
+		collapsiblenew.append($("<h3>").text("New attribute"));
+		collapsiblenew.attr("data-icon", "plus");
+		collapsiblenew.appendTo(collapsibleset);
+		collapsiblenew.click(function(){location.hash = "#addAttribute"; showSelectableAttributes();});
+		
+
+	$.ajax({
+		async: false,
+		type: "POST",
+		url: "http://46.16.233.117/judys_closet/api.php?function=fetchAttributes",
+		dataType: 'json',
+		cache: false,
+		data: {'category':active_category, 'item':active_item},
+		success: function(returnData){
+			if (typeof(extra_attribute) !== "undefined"){
+				collapsible = $("<div>");
+				collapsible.attr("data-role", "collapsible");
+				collapsible.attr("id", "attribute_"+extra_attribute.id);
+				collapsible.attr("data-collapsed-icon", "carat-r");
+				collapsible.attr("data-expanded-icon", "carat-d");
+
+				h3 = $("<h3>").appendTo(collapsible);
+				h3.text(extra_attribute.name);
+				h3.append($("<span id='attribute_list_"+extra_attribute.id+"' style='font-weight:lighter'>").text(""));
+				
+				p = $("<p>").appendTo(collapsible);
+				p.attr("id", "p_"+extra_attribute.id);
+				showOptions(p, extra_attribute.id);
+
+				collapsible.append(h3);
+				}
+			
+			$(returnData).each(function(){
+				collapsible = $("<div>");
+				collapsible.attr("data-role", "collapsible");
+				collapsible.attr("id", "attribute_"+this.id);
+				collapsible.attr("data-collapsed-icon", "carat-r");
+				collapsible.attr("data-expanded-icon", "carat-d");
+
+				h3 = $("<h3>").appendTo(collapsible);
+				h3.text(this.name);
+				h3.append($("<span id='attribute_list_"+this.id+"' style='font-weight:lighter'>").text(""));
+				
+				p = $("<p>").appendTo(collapsible);
+				p.attr("id", "p_"+this.id);
+				showOptions(p, this.id);
+				
+				collapsible.appendTo(collapsibleset);
+
+				updateAttributeOptionsList(this.id);
+
+				});
+			$("#attributes").empty();
+			$("#attributes").append(collapsibleset);
+			collapsibleset.collapsibleset();
+			collapsiblenew.collapsible("disable");
+			collapsibleset.trigger('create');
+			
+			},
+		error: function(xhr, textStatus, error){
+			alert(xhr.statusText+", "+textStatus+", "+error);
+			},
+		});
+	
+	
+	}
+
+function addAttribute(){
+	var result = prompt("New attribute");
+	if (result != null){
+		$.ajax({
+			type: "POST",
+			url: "http://46.16.233.117/judys_closet/api.php?function=addAttribute",
+			dataType: 'json',
+			cache: false,
+			data: {'attribute':result},
+			success: function(returnData){
+				selectAttribute(returnData.id, returnData.name);
+				},
+			error: function(xhr, textStatus, error){
+				alert(xhr.statusText+", "+textStatus+", "+error);
+				},
+			});
+		}
+	}
+
+function showSelectableAttributes(){
+	$.ajax({
+		type: "POST",
+		url: "http://46.16.233.117/judys_closet/api.php?function=fetchSelectableAttributes",
+		dataType: 'json',
+		cache: false,
+		data: {'category':active_category},
+		success: function(returnData){
+			$("#existing_attributes").empty();
+			list = $("<ul>").appendTo($("#existing_attributes"));
+			
+			li = $("<li>").appendTo(list);
+			a = $("<a>").appendTo(li);
+			a.text("Add new attribute");
+			a.click(function(){
+				addAttribute();
+				});
+
+			li = $("<li>").appendTo(list);
+			li.text("Existing attributes");
+			li.attr("data-role", "list-divider");
+			
+			$(returnData).each(function(){
+				li = $("<li>").appendTo(list);
+				a = $("<a>").appendTo(li);
+				a.attr("id", this.id);
+				a.text(this.name);
+				a.click({'id':this.id,'text':this.name}, function(event){
+					selectAttribute(event.data.id, event.data.text);
+					});
+				});
+			
+			list.listview();
+			},
+		error: function(xhr, textStatus, error){
+			alert(xhr.statusText+", "+textStatus+", "+error);
+			},
+		});
+	}
+
+function selectAttribute(id, name){
+	generateAttributeList({'id':id,'name':name});
+	location.hash = "#addItem";
+	}
+
+function showOptions(object, attribute){
+	object.empty();
+	fieldset = $("<fieldset>").appendTo(object);
+	fieldset.attr("data-role", "controlgroup");
+	
+	$.ajax({
+		type: "POST",
+		url: "http://46.16.233.117/judys_closet/api.php?function=fetchOptions",
+		dataType: 'json',
+		cache: false,
+		async: false,
+		data: {'attribute':attribute, 'item':active_item},
+		success: function(returnData){
+			input = $("<input>").appendTo(fieldset);
+			input.attr("type", "button");
+			input.val("Add new option");
+			input.click(function(){
+				addOption(attribute);
+				});
+
+			$.each(returnData, function(){
+				input = $("<input>").appendTo(fieldset);
+				input.attr("type", "checkbox");
+				input.attr("name", "option_"+this.id);
+				input.attr("id", "option_"+this.id);
+				input.attr("checked", this.checked);
+
+				input.click({'id':this.id}, function(event){
+					selectOption(event.data.id, $(this).prop("checked"), attribute);
+					});
+				
+				label = $("<label>").appendTo(fieldset);
+				label.attr("for", "option_"+this.id);
+				label.text(this.name);
+				label.append($("<a name='anchor_"+attribute+"_"+this.id+"'>"));
+				});
+			fieldset.parent().trigger('create');
+			},
+		error: function(xhr, textStatus, error){
+			alert(xhr.statusText+", "+textStatus+", "+error);
+			},
+		});
+	}
+
+function addOption(attribute){
+	var result = prompt("New option");
+	if (result != null){
+		$.ajax({
+			type: "POST",
+			url: "http://46.16.233.117/judys_closet/api.php?function=addOption",
+			dataType: 'json',
+			cache: false,
+			data: {'attribute':attribute,'option':result,'category':active_category,'item':active_item},
+			success: function(returnData){
+				selectOption(returnData.id, true, attribute);
+				showOptions($("#attribute_"+attribute).find("p"), attribute);
+				$("#collapsibleset").trigger('create');
+				location.hash = "#anchor_"+attribute+"_"+returnData.id;
+				},
+			error: function(xhr, textStatus, error){
+				alert(xhr.statusText+", "+textStatus+", "+error);
+				},
+			});
+		}
+	}
+
+function selectOption(id, selected, attribute){
+	$.ajax({
+		type: "POST",
+		url: "http://46.16.233.117/judys_closet/api.php?function=selectOption",
+		dataType: 'text',
+		cache: false,
+		async: false,
+		data: {'category':active_category,'item':active_item,'option':id,'selected':(selected == true ? 1 : 0)},
+		success: function(returnData){
+			updateAttributeOptionsList(attribute);
+			},
+		error: function(xhr, textStatus, error){
+			alert(xhr.statusText+", "+textStatus+", "+error);
+			},
+		});
+	}
+
+function updateAttributeOptionsList(attribute){
+	temp_array = Array();
+	alert($("#attribute_"+attribute).html());
+	$("#attribute_"+attribute).find(".ui-checkbox").each(function(){
+		if ($(this).find("input[type=checkbox]").is(':checked') == true){
+			temp_array.push($(this).find("label").text());
+			}
+		});
+	$("#attribute_list_"+attribute).text(" ("+temp_array.join(", ")+")");
 	}
 
 function spinnerShow(overlay, callback){
