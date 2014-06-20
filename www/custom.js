@@ -31,6 +31,14 @@
 		},
 		function(store){});
 tempval = null;
+
+function isPhoneGap(){
+	if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/)){
+		return true;
+		}
+	return false;
+	}
+
 function clearLawnchair(){
 	store.nuke();
 	}
@@ -985,37 +993,53 @@ function addItem(){
 	}
 
 function uploadImage(){
-	$('#imageForm').ajaxSubmit({
-		data: {'category':active_category, 'item':active_item},
-		dataType: 'json',
-		beforeSend: function(){
-			$("#imagePreview").empty();
-			$("#imagePreview").append($("<div id=progressbar><div class=progress-label></div></div>"));
-			$("#progressbar").progressbar({
-				value: 0,
-				change: function(){
-					$("#progressbar .progress-label").text($(this).progressbar("value") + "%");
-					},
-				});
-			},
-		uploadProgress: function(event, position, total, percentComplete){
-			$("#progressbar").progressbar({
-				value: percentComplete
-				});
-			},
-		success: function(returnData){
-			active_item = returnData.item;
-			$("#imagePreview").empty();
-			img = $("<img>");
-			img.attr("src", "http://46.16.233.117/judys_closet/api.php?function=showImage&id="+returnData.image);
-			img.css("width", "100%");
-			img.click(function(){
-				$('#imageFile').click();
-				})
-			$("#imagePreview").append(img);
-			generateAttributeList();
-			},
-		});
+	if (isPhoneGap()){
+		navigator.camera.getPicture(onSuccess, onFail, { quality: 50, destinationType: Camera.DestinationType.DATA_URL});
+		
+		function onSuccess(imageData) {
+			alert(imageData);
+			//var image = document.getElementById('myImage');
+			//image.src = "data:image/jpeg;base64," + imageData;
+			}
+
+		function onFail(message) {
+			alert('Failed because: ' + message);
+			}
+
+		}
+	else{
+		$('#imageForm').ajaxSubmit({
+			data: {'category':active_category, 'item':active_item},
+			dataType: 'json',
+			beforeSend: function(){
+				$("#imagePreview").empty();
+				$("#imagePreview").append($("<div id=progressbar><div class=progress-label></div></div>"));
+				$("#progressbar").progressbar({
+					value: 0,
+					change: function(){
+						$("#progressbar .progress-label").text($(this).progressbar("value") + "%");
+						},
+					});
+				},
+			uploadProgress: function(event, position, total, percentComplete){
+				$("#progressbar").progressbar({
+					value: percentComplete
+					});
+				},
+			success: function(returnData){
+				active_item = returnData.item;
+				$("#imagePreview").empty();
+				img = $("<img>");
+				img.attr("src", "http://46.16.233.117/judys_closet/api.php?function=showImage&id="+returnData.image);
+				img.css("width", "100%");
+				img.click(function(){
+					$('#imageFile').click();
+					})
+				$("#imagePreview").append(img);
+				generateAttributeList();
+				},
+			});
+		}
 	}
 
 function generateAttributeList(extra_attribute){
@@ -1250,6 +1274,30 @@ function updateAttributeOptionsList(attribute){
 			}
 		});
 	$("#attribute_list_"+attribute).text(" ("+temp_array.join(", ")+")");
+	}
+
+function showItems(){
+	
+	$.ajax({
+		type: "POST",
+		url: "http://46.16.233.117/judys_closet/api.php?function=fetchItems",
+		dataType: 'json',
+		cache: false,
+		data: {category:category},
+		success: function(returnData){
+			$("#items").empty();
+			$.each(returnData, function(key, value){
+				$("<li id="+key+"><a>"+value+"</a></li>").appendTo($("#items")).click(function(){
+					active_category = $(this).attr("id");
+					location.hash = "categoryPage";
+					});
+				})
+			$("#items").listview("refresh");
+			},
+		error: function(xhr, textStatus, error){
+			alert(xhr.statusText+", "+textStatus+", "+error)
+			},
+		});
 	}
 
 function spinnerShow(overlay, callback){
