@@ -997,13 +997,20 @@ function uploadImage(){
 		navigator.camera.getPicture(onSuccess, onFail, { quality: 50, destinationType: Camera.DestinationType.DATA_URL});
 		
 		function onSuccess(imageData) {
-			alert(imageData);
+			setTimeout(function() {
+				alert(imageData);
+				}, 0);
+
+			
 			//var image = document.getElementById('myImage');
 			//image.src = "data:image/jpeg;base64," + imageData;
 			}
 
 		function onFail(message) {
-			alert('Failed because: ' + message);
+			setTimeout(function() {
+				alert('Failed because: ' + message);
+				}, 0);
+			
 			}
 
 		}
