@@ -924,6 +924,7 @@ function fetchCategories(){
 	}
 
 function fetchItems(category){
+	return;
 	$.ajax({
 		type: "POST",
 		url: "http://46.16.233.117/judys_closet/api.php?function=fetchItems",
@@ -965,6 +966,7 @@ function addCategory(){
 	}
 
 function addItem(){
+
 	/*post_data = {'category':active_category};
 	$.ajax({
 		type: "POST",
@@ -1040,7 +1042,7 @@ function generateAttributeList(extra_attribute){
 		data: {'category':active_category, 'item':active_item},
 		success: function(returnData){
 			if (typeof(extra_attribute) !== "undefined"){
-				collapsible = $("<div>");
+				collapsible = $("<div>").appendTo(collapsibleset);
 				collapsible.attr("data-role", "collapsible");
 				collapsible.attr("id", "attribute_"+extra_attribute.id);
 				collapsible.attr("data-collapsed-icon", "carat-r");
@@ -1058,7 +1060,7 @@ function generateAttributeList(extra_attribute){
 				}
 			
 			$(returnData).each(function(){
-				collapsible = $("<div>");
+				collapsible = $("<div>").appendTo(collapsibleset);
 				collapsible.attr("data-role", "collapsible");
 				collapsible.attr("id", "attribute_"+this.id);
 				collapsible.attr("data-collapsed-icon", "carat-r");
@@ -1071,8 +1073,6 @@ function generateAttributeList(extra_attribute){
 				p = $("<p>").appendTo(collapsible);
 				p.attr("id", "p_"+this.id);
 				showOptions(p, this.id);
-				
-				collapsible.appendTo(collapsibleset);
 
 				updateAttributeOptionsList(this.id);
 
@@ -1140,6 +1140,7 @@ function showSelectableAttributes(){
 				a.text(this.name);
 				a.click({'id':this.id,'text':this.name}, function(event){
 					selectAttribute(event.data.id, event.data.text);
+					generateAttributeList({'id':event.data.id,'name':event.data.text});
 					});
 				});
 			
@@ -1212,6 +1213,7 @@ function addOption(attribute){
 			success: function(returnData){
 				selectOption(returnData.id, true, attribute);
 				showOptions($("#attribute_"+attribute).find("p"), attribute);
+				updateAttributeOptionsList(attribute);
 				$("#collapsibleset").trigger('create');
 				location.hash = "#anchor_"+attribute+"_"+returnData.id;
 				},
@@ -1241,7 +1243,7 @@ function selectOption(id, selected, attribute){
 
 function updateAttributeOptionsList(attribute){
 	temp_array = Array();
-	alert($("#attribute_"+attribute).html());
+	//alert($("#attribute_"+attribute).html());
 	$("#attribute_"+attribute).find(".ui-checkbox").each(function(){
 		if ($(this).find("input[type=checkbox]").is(':checked') == true){
 			temp_array.push($(this).find("label").text());

@@ -108,13 +108,20 @@
 <div data-role="page" id="categoryPage">
 	<div role="main" class="ui-content">
 		<a onclick="addItem()" class="ui-shadow ui-btn ui-corner-all" data-transition="pop">Add new item</a>
+		<a onclick="showItems()" class="ui-shadow ui-btn ui-corner-all" data-transition="pop">Show items</a>
 		<ul id="items" data-role="listview" data-inset="true">
 		</ul>
 	</div>
 </div>
 
-<div data-role="page" id="addItem" data-dialog="true">
+<div data-role="page" id="addItem" data-dialog="true" data-close-btn="none">
+	<div data-role="header">
+		<a href="#categoryPage" class="ui-btn ui-corner-all ui-shadow ui-btn-a ui-icon-delete ui-btn-icon-notext ui-btn-right">Close</a>
+		<br><br>
+	</div>
 	<div role="main" class="ui-content">
+		
+		
 		<form method="post" enctype="multipart/form-data" id="imageForm" action="http://46.16.233.117/judys_closet/api.php?function=addImage">
 			<input type=file id="imageFile" name="imageFile" style="display:none" onchange="uploadImage()" data-enhance="false" data-role="none">
 		</form>
@@ -348,7 +355,7 @@
 	</div>
 </div>
 
-<div data-role="footer" data-position="fixed" data-theme="a">
+<!--<div data-role="footer" data-position="fixed" data-theme="a">
 	<div data-role="navbar">
 		<ul>
 			<li><a href="#searchPage" class="ui-state-persist" data-icon="search" data-transition="fade"></a></li>
@@ -356,6 +363,6 @@
 			<li><a href="#debug" class="ui-state-persist" data-icon="alert" data-transition="fade"></a></li>
 		</ul>
 	</div>
-</div>
+</div>-->
 </body>
 </html>
