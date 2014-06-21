@@ -1005,11 +1005,13 @@ function uploadImage(){
 		
 		function onSuccess(imageURI){
 			
-			function uploadSuccess(returnData){
-				console.log(returnData.item);
+			function uploadSuccess(result){
+				console.log('ok');
+				console.log(result.response);
 				}
 
 			function uploadFail(error){
+				console.log('fail');
 				console.log('Failed: '+error.code);
 				}
 
