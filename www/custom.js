@@ -1012,6 +1012,7 @@ function uploadImage(){
 		}
 
 	function successfulUpload(returnData){
+		alert(returnData.item);
 		active_item = returnData.item;
 		$("#imagePreview").empty();
 		img = $("<img>");
@@ -1040,7 +1041,7 @@ function uploadImage(){
 				var options = new FileUploadOptions();
 				options.fileKey = "file";
 				options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
-				options.mimeType = "text/plain";
+				options.mimeType = "image/jpeg";
 				options.headers = {
 					category: active_category,
 					};
