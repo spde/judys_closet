@@ -1017,10 +1017,12 @@ function uploadImage(){
 				imageURI, 
 				encodeURI('http://46.16.233.117/judys_closet/api.php?function=addImage'), 
 				function (r){
+					alert('ok');
 					console.log('ok');
 					console.log(r.response);
 					}, 
 				function(error){
+					alert('fail');
 					console.log('fail');
 					console.log('Failed: '+error.code);
 					}, 
@@ -1029,6 +1031,7 @@ function uploadImage(){
 			}
 
 		function onFail(message) {
+			alert(message);
 			console.log(message);
 			setTimeout(function() {
 				alert('Failed because: ' + message);
