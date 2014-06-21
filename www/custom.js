@@ -1026,12 +1026,12 @@ function uploadImage(){
 
 	if (isPhoneGap()){
 		navigator.camera.getPicture(onSuccess, onFail, {
-			quality: 50, 
+			quality: 20, 
 			destinationType: Camera.DestinationType.FILE_URI,
 			//encodingType: Camera.EncodingType.JPEG,
-			//targetWidth: 100,
-			//targetHeight: 100,
-			//saveToPhotoAlbum: false,
+			targetWidth: 100,
+			targetHeight: 100,
+			saveToPhotoAlbum: false,
 			});
 		
 		function onSuccess(imageURI){
