@@ -1019,7 +1019,7 @@ function uploadImage(){
 			options.fileKey = "file";
 			options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
 			options.mimeType = "text/plain";
-			options.params = {
+			options.headers = {
 				category: active_category,
 				};
 			ft = new FileTransfer();
