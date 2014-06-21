@@ -1067,7 +1067,7 @@ function uploadImage(){
 					function (r){
 						alert(r.response);
 						console.log(r.response);
-						successfulUpload(r.response);
+						successfulUpload(JSON.parse(r.response));
 						}, 
 					function(error){
 						alert('fail');
