@@ -23,6 +23,8 @@
 	<feature name="http://api.phonegap.com/1.0/device" />
 	<feature name="http://api.phonegap.com/1.0/camera" />
 	<feature name="http://api.phonegap.com/1.0/capture" />
+	<feature name="http://api.phonegap.com/1.0/file" />
+	<feature name="http://api.phonegap.com/1.0/file-transfer" />
 	<feature name="Notification">
 		<param name="ios-package" value="CDVNotification" />
 	</feature>
@@ -32,6 +34,13 @@
 	<feature name="Capture">
 	    <param name="ios-package" value="CDVCapture" />
 	</feature>
+	<feature name="File">
+		<param name="ios-package" value="CDVFile" />
+	</feature>
+	<feature name="FileTransfer">
+		<param name="ios-package" value="CDVFileTransfer" />
+	</feature>
+
 
 
 
@@ -71,6 +80,8 @@
 	<gap:plugin name="org.apache.cordova.vibration" />
 	<gap:plugin name="org.apache.cordova.dialogs" />
 	<gap:plugin name="org.apache.cordova.camera" />
+	<gap:plugin name="org.apache.cordova.file" />
+	<gap:plugin name="org.apache.cordova.file-transfer" />
 	<gap:plugin name="nl.x-services.plugins.socialsharing" />
 	<gap:plugin name="it.mobimentum.phonegapspinnerplugin" />
 	
