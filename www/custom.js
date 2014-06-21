@@ -993,6 +993,37 @@ function addItem(){
 	}
 
 function uploadImage(){
+	
+	function initialiseProgressbar(){
+		$("#imagePreview").empty();
+		$("#imagePreview").append($("<div id=progressbar><div class=progress-label></div></div>"));
+		$("#progressbar").progressbar({
+			value: 0,
+			change: function(){
+				$("#progressbar .progress-label").text($(this).progressbar("value") + "%");
+				},
+			});
+		}
+	
+	function updateProgressbar(value){
+		$("#progressbar").progressbar({
+			value: value,
+			});
+		}
+
+	function successfulUpload(returnData){
+		active_item = returnData.item;
+		$("#imagePreview").empty();
+		img = $("<img>");
+		img.attr("src", "http://46.16.233.117/judys_closet/api.php?function=showImage&id="+returnData.image);
+		img.css("width", "100%");
+		img.click(function(){
+			$('#imageFile').click();
+			})
+		$("#imagePreview").append(img);
+		generateAttributeList();
+		}
+
 	if (isPhoneGap()){
 		navigator.camera.getPicture(onSuccess, onFail, {
 			quality: 50, 
@@ -1018,25 +1049,13 @@ function uploadImage(){
 				ft = new FileTransfer();
 
 			//Progress bar initiate
-				$("#imagePreview").empty();
-				$("#imagePreview").append($("<div id=progressbar><div class=progress-label></div></div>"));
-				$("#progressbar").progressbar({
-					value: 0,
-					change: function(){
-						$("#progressbar .progress-label").text($(this).progressbar("value") + "%");
-						},
-					});
+				initialiseProgressbar();
 
 			//Progress bar update
 				ft.onprogress = function(progressEvent) {
 					if (progressEvent.lengthComputable) {
 						var percentComplete = Math.floor(progressEvent.loaded / progressEvent.total * 100);
-						$("#progressbar").progressbar({
-							value: percentComplete,
-							});
-						}
-					else {
-						loadingStatus.increment();
+						progressbarUpdate(percentComplete);
 						}
 					};
 
@@ -1045,23 +1064,20 @@ function uploadImage(){
 					imageURI, 
 					encodeURI('http://46.16.233.117/judys_closet/api.php?function=addImage'), 
 					function (r){
-						alert('ok');
-						console.log('ok');
+						alert(r.response);
 						console.log(r.response);
+						successfulUpload(r.response);
 						}, 
 					function(error){
 						alert('fail');
-						console.log('fail');
-						console.log('Failed: '+error.code);
+						alert('Failed: '+error.code);
 						}, 
 					options);
-			console.log('temp URL: '+imageURI);
 			}
 
 		function onFail(message) {
-			alert(message);
-			console.log(message);
 			setTimeout(function() {
+				console.log(message);
 				alert('Failed because: ' + message);
 				}, 0);
 			
@@ -1073,19 +1089,10 @@ function uploadImage(){
 			data: {'category':active_category, 'item':active_item},
 			dataType: 'json',
 			beforeSend: function(){
-				$("#imagePreview").empty();
-				$("#imagePreview").append($("<div id=progressbar><div class=progress-label></div></div>"));
-				$("#progressbar").progressbar({
-					value: 0,
-					change: function(){
-						$("#progressbar .progress-label").text($(this).progressbar("value") + "%");
-						},
-					});
+				initialiseProgressbar();
 				},
 			uploadProgress: function(event, position, total, percentComplete){
-				$("#progressbar").progressbar({
-					value: percentComplete
-					});
+				progressbarUpdate(percentComplete);
 				},
 			success: function(returnData){
 				active_item = returnData.item;
