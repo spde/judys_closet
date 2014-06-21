@@ -1055,7 +1055,7 @@ function uploadImage(){
 				ft.onprogress = function(progressEvent) {
 					if (progressEvent.lengthComputable) {
 						var percentComplete = Math.floor(progressEvent.loaded / progressEvent.total * 100);
-						progressbarUpdate(percentComplete);
+						updateProgressbar(percentComplete);
 						}
 					};
 
@@ -1092,7 +1092,7 @@ function uploadImage(){
 				initialiseProgressbar();
 				},
 			uploadProgress: function(event, position, total, percentComplete){
-				progressbarUpdate(percentComplete);
+				updateProgressbar(percentComplete);
 				},
 			success: function(returnData){
 				active_item = returnData.item;
