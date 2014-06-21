@@ -1005,28 +1005,56 @@ function uploadImage(){
 		
 		function onSuccess(imageURI){
 			
-			var options = new FileUploadOptions();
-			options.fileKey = "file";
-			options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
-			options.mimeType = "text/plain";
-			options.headers = {
-				category: active_category,
-				};
-			ft = new FileTransfer();
-			ft.upload(
-				imageURI, 
-				encodeURI('http://46.16.233.117/judys_closet/api.php?function=addImage'), 
-				function (r){
-					alert('ok');
-					console.log('ok');
-					console.log(r.response);
-					}, 
-				function(error){
-					alert('fail');
-					console.log('fail');
-					console.log('Failed: '+error.code);
-					}, 
-				options);
+			//Set upload options
+				var options = new FileUploadOptions();
+				options.fileKey = "file";
+				options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+				options.mimeType = "text/plain";
+				options.headers = {
+					category: active_category,
+					};
+
+			//Create FileTransfer object
+				ft = new FileTransfer();
+
+			//Progress bar initiate
+				$("#imagePreview").empty();
+				$("#imagePreview").append($("<div id=progressbar><div class=progress-label></div></div>"));
+				$("#progressbar").progressbar({
+					value: 0,
+					change: function(){
+						$("#progressbar .progress-label").text($(this).progressbar("value") + "%");
+						},
+					});
+
+			//Progress bar update
+				ft.onprogress = function(progressEvent) {
+					if (progressEvent.lengthComputable) {
+						var percentComplete = Math.floor(progressEvent.loaded / progressEvent.total * 100);
+						$("#progressbar").progressbar({
+							value: percentComplete,
+							});
+						}
+					else {
+						loadingStatus.increment();
+						}
+					};
+
+			//Start upload
+				ft.upload(
+					imageURI, 
+					encodeURI('http://46.16.233.117/judys_closet/api.php?function=addImage'), 
+					function (r){
+						alert('ok');
+						console.log('ok');
+						console.log(r.response);
+						}, 
+					function(error){
+						alert('fail');
+						console.log('fail');
+						console.log('Failed: '+error.code);
+						}, 
+					options);
 			console.log('temp URL: '+imageURI);
 			}
 
