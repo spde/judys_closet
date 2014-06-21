@@ -1018,8 +1018,7 @@ function uploadImage(){
 			options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
 			options.mimeType = "text/plain";
 			options.params = {
-				category: category,
-				val2: "some other value",
+				category: active_category,
 				};
 			ft = new FileTransfer();
 			ft.upload(imageURI, 'http://46.16.233.117/judys_closet/api.php?function=addImage', uploadSuccess, fail, options);
