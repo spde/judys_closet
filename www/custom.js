@@ -1005,25 +1005,25 @@ function uploadImage(){
 		
 		function onSuccess(imageURI){
 			
-			function uploadSuccess(result){
+			var uploadSuccess = function (result){
 				console.log('ok');
 				console.log(result.response);
 				}
 
-			function uploadFail(error){
+			var uploadFail = function (error){
 				console.log('fail');
 				console.log('Failed: '+error.code);
 				}
 
 			var options = new FileUploadOptions();
-			options.fileKey = "my_image";
+			options.fileKey = "file";
 			options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
 			options.mimeType = "text/plain";
 			options.params = {
 				category: active_category,
 				};
 			ft = new FileTransfer();
-			ft.upload(imageURI, 'http://46.16.233.117/judys_closet/api.php?function=addImage', uploadSuccess, uploadFail, options);
+			ft.upload(imageURI, encodeURI('http://46.16.233.117/judys_closet/api.php?function=addImage'), uploadSuccess, uploadFail, options);
 			console.log(imageURI);
 			}
 
