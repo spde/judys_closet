@@ -995,7 +995,7 @@ function addItem(){
 function uploadImage(){
 	if (isPhoneGap()){
 		navigator.camera.getPicture(onSuccess, onFail, {
-			//quality: 50, 
+			quality: 50, 
 			destinationType: Camera.DestinationType.FILE_URI,
 			//encodingType: Camera.EncodingType.JPEG,
 			//targetWidth: 100,
@@ -1005,16 +1005,6 @@ function uploadImage(){
 		
 		function onSuccess(imageURI){
 			
-			var uploadSuccess = function (result){
-				console.log('ok');
-				console.log(result.response);
-				}
-
-			var uploadFail = function (error){
-				console.log('fail');
-				console.log('Failed: '+error.code);
-				}
-
 			var options = new FileUploadOptions();
 			options.fileKey = "file";
 			options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
@@ -1023,8 +1013,19 @@ function uploadImage(){
 				category: active_category,
 				};
 			ft = new FileTransfer();
-			ft.upload(imageURI, encodeURI('http://46.16.233.117/judys_closet/api.php?function=addImage'), uploadSuccess, uploadFail, options);
-			console.log(imageURI);
+			ft.upload(
+				imageURI, 
+				encodeURI('http://46.16.233.117/judys_closet/api.php?function=addImage'), 
+				function (r){
+					console.log('ok');
+					console.log(r.response);
+					}, 
+				function(error){
+					console.log('fail');
+					console.log('Failed: '+error.code);
+					}, 
+				options);
+			console.log('temp URL: '+imageURI);
 			}
 
 		function onFail(message) {
