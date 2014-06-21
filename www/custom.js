@@ -997,9 +997,10 @@ function uploadImage(){
 		navigator.camera.getPicture(onSuccess, onFail, { quality: 50, destinationType: Camera.DestinationType.DATA_URL});
 		
 		function onSuccess(imageData) {
-			setTimeout(function() {
+			console.log(imageData);
+			/*setTimeout(function() {
 				alert(imageData);
-				}, 0);
+				}, 0);*/
 
 			
 			//var image = document.getElementById('myImage');
