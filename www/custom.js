@@ -1021,7 +1021,7 @@ function uploadImage(){
 				category: active_category,
 				};
 			ft = new FileTransfer();
-			ft.upload(imageURI, 'http://46.16.233.117/judys_closet/api.php?function=addImage', uploadSuccess, fail, options);
+			ft.upload(imageURI, 'http://46.16.233.117/judys_closet/api.php?function=addImage', uploadSuccess, uploadFail, options);
 			console.log(imageURI);
 			}
 
