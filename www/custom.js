@@ -1003,15 +1003,27 @@ function uploadImage(){
 			//saveToPhotoAlbum: false,
 			});
 		
-		function onSuccess(imageURI) {
-			console.log(imageURI);
-			/*setTimeout(function() {
-				alert(imageData);
-				}, 0);*/
-
+		function onSuccess(imageURI){
 			
-			//var image = document.getElementById('myImage');
-			//image.src = "data:image/jpeg;base64," + imageData;
+			function uploadSuccess(returnData){
+				console.log(returnData.item);
+				}
+
+			function uploadFail(error){
+				console.log('Failed: '+error.code);
+				}
+
+			var options = new FileUploadOptions();
+			options.fileKey = "my_image";
+			options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
+			options.mimeType = "text/plain";
+			options.params = {
+				category: category,
+				val2: "some other value",
+				};
+			ft = new FileTransfer();
+			ft.upload(imageURI, 'http://46.16.233.117/judys_closet/api.php?function=addImage', uploadSuccess, fail, options);
+			console.log(imageURI);
 			}
 
 		function onFail(message) {
