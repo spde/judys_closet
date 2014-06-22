@@ -126,7 +126,7 @@ console.log('PhoneGap: '+isPhoneGap());
 			<input type=file id="imageFile" name="imageFile" style="display:none" onchange="uploadImage()" data-enhance="false" data-role="none">
 		</form>
 		<div id="imagePreview">
-			<input type=button value="Choose file" onclick="if (isPhoneGap()) {uploadImage()} else {$('#imageFile').click()}">
+			<input type=button value="Choose file" onclick="if (isPhoneGap()) {$('#cameraSelection').popup('open');} else {$('#imageFile').click()}">
 		</div>
 		<div id="attributes"></div>
 	</div>
