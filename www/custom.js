@@ -992,7 +992,7 @@ function addItem(){
 		});*/
 	}
 
-function uploadImage(){
+function uploadImage(source){
 	
 	function initialiseProgressbar(){
 		$("#imagePreview").empty();
@@ -1012,34 +1012,42 @@ function uploadImage(){
 		}
 
 	function successfulUpload(returnData){
-		alert(returnData.item);
 		active_item = returnData.item;
 		$("#imagePreview").empty();
 		img = $("<img>");
 		img.attr("src", "http://46.16.233.117/judys_closet/api.php?function=showImage&id="+returnData.image);
 		img.css("width", "100%");
 		img.click(function(){
-			$('#imageFile').click();
+			if (isPhoneGap()){
+				$("#cameraSelection").popup("open");
+				}
+			else{
+				//$("#cameraSelection").popup("open");
+				$('#imageFile').click();
+				}
 			})
 		$("#imagePreview").append(img);
 		generateAttributeList();
 		}
 
 	if (isPhoneGap()){
-		navigator.camera.getPicture(onSuccess, onFail, {
-			quality: 20, 
-			destinationType: Camera.DestinationType.FILE_URI,
-			//encodingType: Camera.EncodingType.JPEG,
-			targetWidth: 100,
-			targetHeight: 100,
-			saveToPhotoAlbum: false,
-			});
+		
+		//Take new picture
+			navigator.camera.getPicture(onSuccess, onFail, {
+				quality: 30, 
+				sourceType: source,
+				destinationType: Camera.DestinationType.FILE_URI,
+				encodingType: Camera.EncodingType.JPEG,
+				targetWidth: 100,
+				targetHeight: 100,
+				saveToPhotoAlbum: false,
+				});
 		
 		function onSuccess(imageURI){
 			
 			//Set upload options
 				var options = new FileUploadOptions();
-				options.fileKey = "file";
+				options.fileKey = "imageFile";
 				options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1);
 				options.mimeType = "image/jpeg";
 				options.headers = {
@@ -1065,7 +1073,6 @@ function uploadImage(){
 					imageURI, 
 					encodeURI('http://46.16.233.117/judys_closet/api.php?function=addImage'), 
 					function (r){
-						alert(r.response);
 						console.log(r.response);
 						successfulUpload(JSON.parse(r.response));
 						}, 
@@ -1096,19 +1103,14 @@ function uploadImage(){
 				updateProgressbar(percentComplete);
 				},
 			success: function(returnData){
-				active_item = returnData.item;
-				$("#imagePreview").empty();
-				img = $("<img>");
-				img.attr("src", "http://46.16.233.117/judys_closet/api.php?function=showImage&id="+returnData.image);
-				img.css("width", "100%");
-				img.click(function(){
-					$('#imageFile').click();
-					})
-				$("#imagePreview").append(img);
-				generateAttributeList();
+				successfulUpload(returnData);
 				},
 			});
 		}
+	}
+
+function cameraSelection(){
+	
 	}
 
 function generateAttributeList(extra_attribute){

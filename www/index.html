@@ -126,10 +126,17 @@ console.log('PhoneGap: '+isPhoneGap());
 			<input type=file id="imageFile" name="imageFile" style="display:none" onchange="uploadImage()" data-enhance="false" data-role="none">
 		</form>
 		<div id="imagePreview">
-			<!--<input type=button value="Choose file" onclick="$('#imageFile').click()">-->
-			<input type=button value="Choose file" onclick="console.log('uploadImage()');uploadImage();">
+			<input type=button value="Choose file" onclick="if (isPhoneGap()) {uploadImage()} else {$('#imageFile').click()}">
 		</div>
 		<div id="attributes"></div>
+	</div>
+	<div data-role="popup" id="cameraSelection" data-theme="a" data-overlay-theme="a" class="ui-corner-all">
+		<form>
+			<div style="padding:10px 20px;">
+				<button onclick='uploadImage(1)'>Take new picture</button>
+				<button onclick='uploadImage(0)'>Choose existing</button>
+			</div>
+		</form>
 	</div>
 </div>
 
@@ -338,21 +345,6 @@ console.log('PhoneGap: '+isPhoneGap());
 		</div>
 
 		<a class="ui-btn" href="#resultsPage" onclick="spinnerShow(true, function(){showResults()})" lang-id="search">Search</a>
-	</div>
-</div>
-
-
-
-<div data-role="page" id="userPage">
-	<div role="main" class="ui-content">
-		<label for=username lang-id="username">Username</label>
-		<input type=text id=username>
-		<label for=password lang-id="password">Password</label>
-		<input type=password id=password>
-		<a class="ui-btn" onclick="saveUserDetails()" lang-id="save">Save</a>
-		<label for=language_selector lang-id="language">Language</label>
-		<select id=language_selector>
-		</select>
 	</div>
 </div>
 
