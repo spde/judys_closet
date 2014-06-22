@@ -1012,7 +1012,9 @@ function uploadImage(source){
 		}
 
 	function successfulUpload(returnData){
+		
 		active_item = returnData.item;
+		alert('ok');
 		$("#imagePreview").empty();
 		img = $("<img>");
 		img.attr("src", "http://46.16.233.117/judys_closet/api.php?function=showImage&id="+returnData.image);
