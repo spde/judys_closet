@@ -1021,9 +1021,7 @@ function uploadImage(source){
 		}
 
 	function successfulUpload(returnData){
-		
 		active_item = returnData.item;
-		alert('ok');
 		$("#imagePreview").empty();
 		img = $("<img>");
 		img.attr("src", API_URL + "?function=showImage&id="+returnData.image);
@@ -1040,8 +1038,8 @@ function uploadImage(source){
 				sourceType: source,
 				destinationType: Camera.DestinationType.FILE_URI,
 				encodingType: Camera.EncodingType.JPEG,
-				targetWidth: 100,
-				targetHeight: 100,
+				targetWidth: $(window).width(),
+				targetHeight: $(window).height(),
 				saveToPhotoAlbum: false,
 				});
 		
