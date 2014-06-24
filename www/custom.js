@@ -1054,6 +1054,9 @@ function uploadImage(source){
 				options.headers = {
 					category: active_category,
 					};
+				options.params = {
+					category: active_category,
+					};
 
 			//Create FileTransfer object
 				ft = new FileTransfer();
