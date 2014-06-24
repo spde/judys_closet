@@ -895,6 +895,13 @@ function onDeviceReady(){
 	//Listeners
 		$(document).on("pagebeforeshow", "#categoryPage", function(event, ui){
 			fetchItems(active_category);
+			
+			//Reset item form
+				active_item = null;
+				$("#attributes").empty();
+				$("#imagePreview").empty();
+				$("<input>").attr("type", "button").val("Camera").click(function(){uploadImage(1)}).appendTo($("#imagePreview"));
+				$("<input>").attr("type", "button").val("Choose existing").click(function(){if (isPhoneGap()) {uploadImage(0)} else {$('#imageFile').click()}}).appendTo($("#imagePreview"));
 			});
 
 		
@@ -1392,21 +1399,26 @@ function initialise(){
 	}
 
 function navPreviousPage(){
-	index = item_page_number_array.indexOf(active_item_page_number);
-	$(":mobile-pagecontainer").pagecontainer("change", "#itemPage" + item_page_number_array.slice((index-1))[0], {
+	page_index = item_page_number_array.indexOf(active_item_page_number)-1;
+	active_item_page_number = item_page_number_array[page_index];
+	console.log("#itemPage" + item_page_number_array.slice(page_index)[0]);
+	$(":mobile-pagecontainer").pagecontainer("change", "#itemPage" + item_page_number_array.slice(page_index)[0], {
 		transition: "slide"
 		});
-	index = item_page_number_array.indexOf(active_item);
-	active_item = item_list.slice((item_list.indexOf(active_item)-1))[0];
-	alert("index: "+(item_list.indexOf(active_item)-1)+" item:"+active_item);
+	item_index = item_list.indexOf(active_item)-1;
+	active_item = item_list.slice(item_index)[0];
 	}
 
 function navNextPage(){
-	index = item_page_number_array.indexOf(active_item_page_number);
-	$(":mobile-pagecontainer").pagecontainer("change", "#itemPage"+item_page_number_array[(index+1)], {
+	page_index = item_page_number_array.indexOf(active_item_page_number)+1;
+	page_index = page_index > (item_page_number_array.length-1) ? 0 : page_index;
+	active_item_page_number = item_page_number_array[page_index];
+	console.log("#itemPage"+item_page_number_array[page_index]);
+	$(":mobile-pagecontainer").pagecontainer("change", "#itemPage"+item_page_number_array[page_index], {
 		transition: "slide",
 		reverse: true
 		});
-	active_item = item_list[(item_list.indexOf(active_item)+1)];
-	alert("index: "+(item_list.indexOf(active_item)+1)+" item:"+active_item);
+	item_index = item_list.indexOf(active_item)+1;
+	item_index = item_index > (item_list.length-1) ? 0 : item_index;
+	active_item = item_list[item_index];
 	}

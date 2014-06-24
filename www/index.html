@@ -119,8 +119,6 @@ console.log('PhoneGap: '+isPhoneGap());
 		<br><br>
 	</div>
 	<div role="main" class="ui-content">
-		
-		
 		<form method="post" enctype="multipart/form-data" id="imageForm" action=API_URL + "?function=addImage">
 			<input type=file id="imageFile" name="imageFile" style="display:none" onchange="uploadImage()" data-enhance="false" data-role="none">
 		</form>
@@ -130,14 +128,14 @@ console.log('PhoneGap: '+isPhoneGap());
 		</div>
 		<div id="attributes"></div>
 	</div>
-	<div data-role="popup" id="cameraSelection" data-theme="a" data-overlay-theme="a" class="ui-corner-all">
+	<!--<div data-role="popup" id="cameraSelection" data-theme="a" data-overlay-theme="a" class="ui-corner-all">
 		<form>
 			<div style="padding:10px 20px;">
 				<button onclick='uploadImage(1)'>Take new picture</button>
 				<button onclick='uploadImage(0)'>Choose existing</button>
 			</div>
 		</form>
-	</div>
+	</div>-->
 </div>
 
 <div data-role="page" id="addAttribute" data-dialog="true">
