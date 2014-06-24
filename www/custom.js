@@ -1392,10 +1392,13 @@ function initialise(){
 	}
 
 function navPreviousPage(){
-	index = item_page_number_array[(index+1)].indexOf(active_item);
+	index = item_page_number_array.indexOf(active_item_page_number);
 	$(":mobile-pagecontainer").pagecontainer("change", "#itemPage" + item_page_number_array.slice((index-1))[0], {
 		transition: "slide"
 		});
+	index = item_page_number_array.indexOf(active_item);
+	active_item = item_list.slice((item_list.indexOf(active_item)-1))[0];
+	alert(active_item);
 	}
 
 function navNextPage(){
@@ -1404,4 +1407,6 @@ function navNextPage(){
 		transition: "slide",
 		reverse: true
 		});
+	active_item = item_list[(item_list.indexOf(active_item)+1)];
+	alert(active_item);
 	}
