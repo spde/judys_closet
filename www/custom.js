@@ -32,6 +32,12 @@
 		function(store){});
 tempval = null;
 
+API_URL = "http://46.16.233.117/judys_closet/api.php";
+
+item_list = [];
+test_obj = {};
+var lookup = {};
+
 function isPhoneGap(){
 	if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/)){
 		return true;
@@ -912,7 +918,7 @@ function onDeviceReady(){
 function fetchCategories(){	
 	$.ajax({
 		type: "POST",
-		url: "http://46.16.233.117/judys_closet/api.php?function=fetchCategories",
+		url: API_URL + "?function=fetchCategories",
 		dataType: 'json',
 		cache: false,
 		success: function(returnData){
@@ -935,7 +941,7 @@ function fetchItems(category){
 	return;
 	$.ajax({
 		type: "POST",
-		url: "http://46.16.233.117/judys_closet/api.php?function=fetchItems",
+		url: API_URL + "?function=fetchItems",
 		dataType: 'json',
 		cache: false,
 		data: {category:category},
@@ -958,7 +964,7 @@ function fetchItems(category){
 function addCategory(){
 	$.ajax({
 		type: "POST",
-		url: "http://46.16.233.117/judys_closet/api.php?function=addCategory",
+		url: API_URL + "?function=addCategory",
 		dataType: 'text',
 		cache: false,
 		data: {'category_name':$("#category_name").val()},
@@ -978,7 +984,7 @@ function addItem(){
 	/*post_data = {'category':active_category};
 	$.ajax({
 		type: "POST",
-		url: "http://46.16.233.117/judys_closet/api.php?function=addItem",
+		url: API_URL + "?function=addItem",
 		dataType: 'text',
 		cache: false,
 		data: JSON.stringify(post_data),
@@ -1017,7 +1023,7 @@ function uploadImage(source){
 		alert('ok');
 		$("#imagePreview").empty();
 		img = $("<img>");
-		img.attr("src", "http://46.16.233.117/judys_closet/api.php?function=showImage&id="+returnData.image);
+		img.attr("src", API_URL + "?function=showImage&id="+returnData.image);
 		img.css("width", "100%");
 		img.click(function(){
 			if (isPhoneGap()){
@@ -1133,7 +1139,7 @@ function generateAttributeList(extra_attribute){
 	$.ajax({
 		async: false,
 		type: "POST",
-		url: "http://46.16.233.117/judys_closet/api.php?function=fetchAttributes",
+		url: API_URL + "?function=fetchAttributes",
 		dataType: 'json',
 		cache: false,
 		data: {'category':active_category, 'item':active_item},
@@ -1194,7 +1200,7 @@ function addAttribute(){
 	if (result != null){
 		$.ajax({
 			type: "POST",
-			url: "http://46.16.233.117/judys_closet/api.php?function=addAttribute",
+			url: API_URL + "?function=addAttribute",
 			dataType: 'json',
 			cache: false,
 			data: {'attribute':result},
@@ -1211,7 +1217,7 @@ function addAttribute(){
 function showSelectableAttributes(){
 	$.ajax({
 		type: "POST",
-		url: "http://46.16.233.117/judys_closet/api.php?function=fetchSelectableAttributes",
+		url: API_URL + "?function=fetchSelectableAttributes",
 		dataType: 'json',
 		cache: false,
 		data: {'category':active_category},
@@ -1261,7 +1267,7 @@ function showOptions(object, attribute){
 	
 	$.ajax({
 		type: "POST",
-		url: "http://46.16.233.117/judys_closet/api.php?function=fetchOptions",
+		url: API_URL + "?function=fetchOptions",
 		dataType: 'json',
 		cache: false,
 		async: false,
@@ -1303,7 +1309,7 @@ function addOption(attribute){
 	if (result != null){
 		$.ajax({
 			type: "POST",
-			url: "http://46.16.233.117/judys_closet/api.php?function=addOption",
+			url: API_URL + "?function=addOption",
 			dataType: 'json',
 			cache: false,
 			data: {'attribute':attribute,'option':result,'category':active_category,'item':active_item},
@@ -1324,7 +1330,7 @@ function addOption(attribute){
 function selectOption(id, selected, attribute){
 	$.ajax({
 		type: "POST",
-		url: "http://46.16.233.117/judys_closet/api.php?function=selectOption",
+		url: API_URL + "?function=selectOption",
 		dataType: 'text',
 		cache: false,
 		async: false,
@@ -1350,27 +1356,63 @@ function updateAttributeOptionsList(attribute){
 	}
 
 function showItems(){
-	
 	$.ajax({
 		type: "POST",
-		url: "http://46.16.233.117/judys_closet/api.php?function=fetchItems",
+		url: API_URL + "?function=fetchItems",
 		dataType: 'json',
 		cache: false,
-		data: {category:category},
+		data: {category:active_category},
 		success: function(returnData){
-			$("#items").empty();
-			$.each(returnData, function(key, value){
-				$("<li id="+key+"><a>"+value+"</a></li>").appendTo($("#items")).click(function(){
-					active_category = $(this).attr("id");
-					location.hash = "categoryPage";
-					});
-				})
-			$("#items").listview("refresh");
+			item_list = returnData.data;
+			active_item = returnData.first_item;
+			initialise();
+			loadItem(active_item);
+			location.hash = "#itemPage2";
 			},
 		error: function(xhr, textStatus, error){
 			alert(xhr.statusText+", "+textStatus+", "+error)
 			},
 		});
+	}
+
+function loadItem(id){
+	$("#item_image2").attr("src", API_URL + "?function=showImage&id=" + item_list[id].img);
+	}
+
+function initialise(){
+	function navnext( next ) {
+        $( ":mobile-pagecontainer" ).pagecontainer( "change", next + ".html", {
+            transition: "slide"
+        });
+    }
+    // Handler for navigating to the previous page
+    function navprev( prev ) {
+        $( ":mobile-pagecontainer" ).pagecontainer( "change", prev + ".html", {
+            transition: "slide",
+            reverse: true
+        });
+	}
+
+	// Navigate to the next page on swipeleft
+    $( document ).on( "swipeleft", ".ui-page", function( event ) {
+        // Get the filename of the next page. We stored that in the data-next
+        // attribute in the original markup.
+        var next = $( this ).jqmData( "next" );
+        // Check if there is a next page and
+        // swipes may also happen when the user highlights text, so ignore those.
+        // We're only interested in swipes on the page.
+        if ( next && ( event.target === $( this )[ 0 ] ) ) {
+            navnext( next );
+        }
+    });
+
+	// The same for the navigating to the previous page
+    $( document ).on( "swiperight", ".ui-page", function( event ) {
+        var prev = $( this ).jqmData( "prev" );
+        if ( prev && ( event.target === $( this )[ 0 ] ) ) {
+            navprev( prev );
+        }
+    });
 	}
 
 function spinnerShow(overlay, callback){

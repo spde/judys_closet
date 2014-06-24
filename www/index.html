@@ -122,7 +122,7 @@ console.log('PhoneGap: '+isPhoneGap());
 	<div role="main" class="ui-content">
 		
 		
-		<form method="post" enctype="multipart/form-data" id="imageForm" action="http://46.16.233.117/judys_closet/api.php?function=addImage">
+		<form method="post" enctype="multipart/form-data" id="imageForm" action=API_URL + "?function=addImage">
 			<input type=file id="imageFile" name="imageFile" style="display:none" onchange="uploadImage()" data-enhance="false" data-role="none">
 		</form>
 		<div id="imagePreview">
@@ -147,15 +147,21 @@ console.log('PhoneGap: '+isPhoneGap());
 	</div>
 </div>
 
-<div data-role="page" id="itemPage" data-dialog=true>
+<div data-role="page" id="itemPage1">
 	<div role="main" class="ui-content">
-		<ul data-role="listview" data-inset="true">
-			<li><a href="#">Item 1</a></li>
-			<li><a href="#">Item 2</a></li>
-			<li><a href="#">Bags</a></li>
-			<li><a href="#">Hats</a></li>
-			<li><a href="#">Belts</a></li>
-		</ul>
+		<img id='item_image1' style='height:100%'>
+	</div>
+</div>
+
+<div data-role="page" id="itemPage2">
+	<div role="main" class="ui-content">
+		<img id='item_image2' style='height:100%'>
+	</div>
+</div>
+
+<div data-role="page" id="itemPage3">
+	<div role="main" class="ui-content">
+		<img id='item_image3' style='height:100%'>
 	</div>
 </div>
 
