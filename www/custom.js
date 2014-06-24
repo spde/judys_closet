@@ -1361,8 +1361,6 @@ function showItems(){
 			active_item = item_list[0];
 			initialise();
 			loadItem();
-			alert(getPreviousItem());
-			alert(getNextItem());
 			location.hash = "#itemPage2";
 			},
 		error: function(xhr, textStatus, error){
@@ -1395,19 +1393,20 @@ function initialise(){
 
 	// Navigate to the next page on swipeleft
     $( document ).on( "swipeleft", ".ui-page", function( event ) {
-        alert('swiped left');
+		alert('swiped left');
 		// Get the filename of the next page. We stored that in the data-next
         // attribute in the original markup.
-        var next = $( this ).jqmData( "next" );
-		navnext(1);
-		navprev(1);
+        navnext(1);
+		var next = $( this ).jqmData( "next" );
+		
+		
     });
 
 	// The same for the navigating to the previous page
     $( document ).on( "swiperight", ".ui-page", function( event ) {
-        alert('swiped right');
+		alert('swiped right');
+		navprev(1);
 		var prev = $( this ).jqmData( "prev" );
-        
     });
 	}
 
