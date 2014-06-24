@@ -37,7 +37,8 @@ API_URL = "http://46.16.233.117/judys_closet/api.php";
 item_list = [];
 image_list = [];
 
-item_page_array = [0, 1, 2];
+item_page_number_array = [1, 2, 3];
+active_item_page_number = 2;
 
 
 function isPhoneGap(){
@@ -1364,7 +1365,7 @@ function showItems(){
 			active_item = item_list[0];
 			initialise();
 			loadItem();
-			location.hash = "#itemPage2";
+			location.hash = "#itemPage" + 2;
 			},
 		error: function(xhr, textStatus, error){
 			alert(xhr.statusText+", "+textStatus+", "+error)
@@ -1380,37 +1381,29 @@ function loadItem(){
 	}
 
 function initialise(){
-	
-	function navnext( next ) {
-        $( ":mobile-pagecontainer" ).pagecontainer( "change", "#itemPage3", {
-            transition: "slide"
-			});
-		}
-    // Handler for navigating to the previous page
-    function navprev( prev ) {
-        $( ":mobile-pagecontainer" ).pagecontainer( "change", "#itemPage1", {
-            transition: "slide",
-            reverse: true
-			});
-		}
 
 	// Navigate to the next page on swipeleft
-    $( document ).on( "swipeleft", ".ui-page", function( event ) {
-		navnext(1);
+    $(document).on("swipeleft", ".ui-page", function(event) {
+		navNextPage();
 		});
 
 	// The same for the navigating to the previous page
-    $( document ).on( "swiperight", ".ui-page", function( event ) {
-		navprev(1);
+    $(document).on( "swiperight", ".ui-page", function(event) {
+		navPreviousPage();
 		});
 	}
 
-function getPreviousItem(){
-	index = item_list.indexOf(active_item);
-	return item_list.slice((index-1))[0];
+function navPreviousPage(){
+	index = item_page_number_array[(index+1)].indexOf(active_item);
+	$(":mobile-pagecontainer").pagecontainer("change", "#itemPage" + item_page_number_array.slice((index-1))[0], {
+		transition: "slide"
+		});
 	}
 
-function getNextItem(){
-	index = item_list.indexOf(active_item);
-	return item_list[(index+1)];
+function navNextPage(){
+	index = item_page_number_array.indexOf(active_item_page_number);
+	$(":mobile-pagecontainer").pagecontainer("change", "#itemPage"+item_page_number_array[(index+1)], {
+		transition: "slide",
+		reverse: true
+		});
 	}
