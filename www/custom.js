@@ -1025,15 +1025,6 @@ function uploadImage(source){
 		img = $("<img>");
 		img.attr("src", API_URL + "?function=showImage&id="+returnData.image);
 		img.css("width", "100%");
-		img.click(function(){
-			if (isPhoneGap()){
-				$("#cameraSelection").popup("open");
-				}
-			else{
-				//$("#cameraSelection").popup("open");
-				$('#imageFile').click();
-				}
-			})
 		$("#imagePreview").append(img);
 		generateAttributeList();
 		}
@@ -1395,23 +1386,17 @@ function initialise(){
 
 	// Navigate to the next page on swipeleft
     $( document ).on( "swipeleft", ".ui-page", function( event ) {
-        // Get the filename of the next page. We stored that in the data-next
+        alert('swiped left');
+		// Get the filename of the next page. We stored that in the data-next
         // attribute in the original markup.
         var next = $( this ).jqmData( "next" );
-        // Check if there is a next page and
-        // swipes may also happen when the user highlights text, so ignore those.
-        // We're only interested in swipes on the page.
-        if ( next && ( event.target === $( this )[ 0 ] ) ) {
-            navnext( next );
-        }
     });
 
 	// The same for the navigating to the previous page
     $( document ).on( "swiperight", ".ui-page", function( event ) {
-        var prev = $( this ).jqmData( "prev" );
-        if ( prev && ( event.target === $( this )[ 0 ] ) ) {
-            navprev( prev );
-        }
+        alert('swiped right');
+		var prev = $( this ).jqmData( "prev" );
+        
     });
 	}
 
