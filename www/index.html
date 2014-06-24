@@ -122,10 +122,7 @@ console.log('PhoneGap: '+isPhoneGap());
 		<form method="post" enctype="multipart/form-data" id="imageForm" action=API_URL + "?function=addImage">
 			<input type=file id="imageFile" name="imageFile" style="display:none" onchange="uploadImage()" data-enhance="false" data-role="none">
 		</form>
-		<div id="imagePreview">
-			<input type=button value="Camera" onclick="uploadImage(1);">
-			<input type=button value="Choose file" onclick="if (isPhoneGap()) {$('#cameraSelection').popup('open');} else {$('#imageFile').click()}">
-		</div>
+		<div id="imagePreview"></div>
 		<div id="attributes"></div>
 	</div>
 	<!--<div data-role="popup" id="cameraSelection" data-theme="a" data-overlay-theme="a" class="ui-corner-all">

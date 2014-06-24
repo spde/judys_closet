@@ -900,8 +900,8 @@ function onDeviceReady(){
 				active_item = null;
 				$("#attributes").empty();
 				$("#imagePreview").empty();
-				$("<input>").attr("type", "button").val("Camera").click(function(){uploadImage(1)}).appendTo($("#imagePreview"));
-				$("<input>").attr("type", "button").val("Choose existing").click(function(){if (isPhoneGap()) {uploadImage(0)} else {$('#imageFile').click()}}).appendTo($("#imagePreview"));
+				$("<input>").attr("type", "button").val("Camera").click(function(){uploadImage(1)}).button().appendTo($("#imagePreview"));
+				$("<input>").attr("type", "button").val("Choose existing").click(function(){if (isPhoneGap()) {uploadImage(0)} else {$('#imageFile').click()}}).button().appendTo($("#imagePreview"));
 			});
 
 		
@@ -914,6 +914,17 @@ function onDeviceReady(){
 		$("input, textarea, select").on("blur", function(){
 			$("div[data-role='footer']").show();
 			});
+
+	//Swipe actions on images
+		//Navigate to the next page on swipeleft
+			$(document).on("swipeleft", "#itemPage1, #itemPage2, #itemPage3", function(event) {
+				navNextPage();
+				});
+
+		//The same for the navigating to the previous page
+			$(document).on("swiperight", "#itemPage1, #itemPage2, #itemPage3", function(event) {
+				navPreviousPage();
+				});
 
 	//Show page loader during page switch
 		$(document).on("pagebeforeshow", function(){
@@ -1368,8 +1379,7 @@ function showItems(){
 			item_list = returnData.items;
 			image_list = returnData.images;
 			active_item = item_list[0];
-			initialise();
-			loadItem();
+			preloadImages(1, 0);
 			location.hash = "#itemPage" + 2;
 			},
 		error: function(xhr, textStatus, error){
@@ -1378,24 +1388,26 @@ function showItems(){
 		});
 	}
 
-function loadItem(){
-	index = item_list.indexOf(active_item);
-	$("#item_image2").attr("src", API_URL + "?function=showImage&id=" + image_list[index]);
-	$("#item_image1").attr("src", API_URL + "?function=showImage&id=" + image_list.slice((index-1))[0]);
-	$("#item_image3").attr("src", API_URL + "?function=showImage&id=" + image_list[(index+1)]);
-	}
+function preloadImages(curr_page_index, curr_item_index){
+	//Curr
+		curr_page = item_page_number_array[curr_page_index];
+		curr_item = image_list[curr_item_index];
+		//$("#item_image"+curr_page).attr("src", API_URL + "?function=showImage&id=" + curr_item);
+	
+	//Prev
+		prev_page_index = curr_page_index-1;
+		prev_page = item_page_number_array[prev_page_index];
+		prev_item_index = curr_item_index-1;
+		prev_item = image_list.slice(prev_item_index)[0];
+		$("#item_image"+prev_page).attr("src", API_URL + "?function=showImage&id=" + prev_item);
+	
+	//Next
+		next_page_index = (curr_page_index+1) > (item_page_number_array.length-1) ? 0 : (curr_page_index+1);
+		next_page = item_page_number_array[next_page_index];
+		next_item_index = (curr_item_index+1) > (item_list.length-1) ? 0 : (curr_item_index+1);
+		next_item = item_list[next_item_index]
+		$("#item_image"+next_page).attr("src", API_URL + "?function=showImage&id=" + next_item);
 
-function initialise(){
-
-	// Navigate to the next page on swipeleft
-    $(document).on("swipeleft", ".ui-page", function(event) {
-		navNextPage();
-		});
-
-	// The same for the navigating to the previous page
-    $(document).on( "swiperight", ".ui-page", function(event) {
-		navPreviousPage();
-		});
 	}
 
 function navPreviousPage(){
@@ -1403,10 +1415,13 @@ function navPreviousPage(){
 	active_item_page_number = item_page_number_array[page_index];
 	console.log("#itemPage" + item_page_number_array.slice(page_index)[0]);
 	$(":mobile-pagecontainer").pagecontainer("change", "#itemPage" + item_page_number_array.slice(page_index)[0], {
-		transition: "slide"
+		transition: "slide",
+		reverse: true,
 		});
 	item_index = item_list.indexOf(active_item)-1;
 	active_item = item_list.slice(item_index)[0];
+
+	preloadImages(page_index, item_index);
 	}
 
 function navNextPage(){
@@ -1416,9 +1431,10 @@ function navNextPage(){
 	console.log("#itemPage"+item_page_number_array[page_index]);
 	$(":mobile-pagecontainer").pagecontainer("change", "#itemPage"+item_page_number_array[page_index], {
 		transition: "slide",
-		reverse: true
 		});
 	item_index = item_list.indexOf(active_item)+1;
 	item_index = item_index > (item_list.length-1) ? 0 : item_index;
 	active_item = item_list[item_index];
+
+	preloadImages(page_index, item_index);
 	}
