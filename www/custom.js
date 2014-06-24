@@ -35,8 +35,10 @@ tempval = null;
 API_URL = "http://46.16.233.117/judys_closet/api.php";
 
 item_list = [];
-test_obj = {};
-var lookup = {};
+image_list = [];
+
+item_page_array = [0, 1, 2];
+
 
 function isPhoneGap(){
 	if (navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|IEMobile)/)){
@@ -1354,10 +1356,13 @@ function showItems(){
 		cache: false,
 		data: {category:active_category},
 		success: function(returnData){
-			item_list = returnData.data;
-			active_item = returnData.first_item;
+			item_list = returnData.items;
+			image_list = returnData.images;
+			active_item = item_list[0];
 			initialise();
-			loadItem(active_item);
+			loadItem();
+			alert(getPreviousItem());
+			alert(getNextItem());
 			location.hash = "#itemPage2";
 			},
 		error: function(xhr, textStatus, error){
@@ -1366,19 +1371,23 @@ function showItems(){
 		});
 	}
 
-function loadItem(id){
-	$("#item_image2").attr("src", API_URL + "?function=showImage&id=" + item_list[id].img);
+function loadItem(){
+	index = item_list.indexOf(active_item);
+	$("#item_image2").attr("src", API_URL + "?function=showImage&id=" + image_list[index]);
+	$("#item_image1").attr("src", API_URL + "?function=showImage&id=" + image_list.slice((index-1))[0]);
+	$("#item_image3").attr("src", API_URL + "?function=showImage&id=" + image_list[(index+1)]);
 	}
 
 function initialise(){
+	
 	function navnext( next ) {
-        $( ":mobile-pagecontainer" ).pagecontainer( "change", next + ".html", {
+        $( ":mobile-pagecontainer" ).pagecontainer( "change", "#itemPage3", {
             transition: "slide"
         });
     }
     // Handler for navigating to the previous page
     function navprev( prev ) {
-        $( ":mobile-pagecontainer" ).pagecontainer( "change", prev + ".html", {
+        $( ":mobile-pagecontainer" ).pagecontainer( "change", "#itemPage1", {
             transition: "slide",
             reverse: true
         });
@@ -1390,6 +1399,8 @@ function initialise(){
 		// Get the filename of the next page. We stored that in the data-next
         // attribute in the original markup.
         var next = $( this ).jqmData( "next" );
+		navnext(1);
+		navprev(1);
     });
 
 	// The same for the navigating to the previous page
@@ -1400,9 +1411,12 @@ function initialise(){
     });
 	}
 
-function spinnerShow(overlay, callback){
-	//spinnerplugin.show({overlay: overlay});
-	if(typeof callback == "function"){
-		setTimeout(function(){callback()}, 50);
-		}
+function getPreviousItem(){
+	index = item_list.indexOf(active_item);
+	return item_list.slice((index-1))[0];
+	}
+
+function getNextItem(){
+	index = item_list.indexOf(active_item);
+	return item_list[(index+1)];
 	}
