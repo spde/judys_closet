@@ -1381,33 +1381,25 @@ function initialise(){
 	function navnext( next ) {
         $( ":mobile-pagecontainer" ).pagecontainer( "change", "#itemPage3", {
             transition: "slide"
-        });
-    }
+			});
+		}
     // Handler for navigating to the previous page
     function navprev( prev ) {
         $( ":mobile-pagecontainer" ).pagecontainer( "change", "#itemPage1", {
             transition: "slide",
             reverse: true
-        });
-	}
+			});
+		}
 
 	// Navigate to the next page on swipeleft
     $( document ).on( "swipeleft", ".ui-page", function( event ) {
-		alert('swiped left');
-		// Get the filename of the next page. We stored that in the data-next
-        // attribute in the original markup.
-        navnext(1);
-		var next = $( this ).jqmData( "next" );
-		
-		
-    });
+		navnext(1);
+		});
 
 	// The same for the navigating to the previous page
     $( document ).on( "swiperight", ".ui-page", function( event ) {
-		alert('swiped right');
 		navprev(1);
-		var prev = $( this ).jqmData( "prev" );
-    });
+		});
 	}
 
 function getPreviousItem(){
