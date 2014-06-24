@@ -1398,7 +1398,7 @@ function navPreviousPage(){
 		});
 	index = item_page_number_array.indexOf(active_item);
 	active_item = item_list.slice((item_list.indexOf(active_item)-1))[0];
-	alert(active_item);
+	alert("index: "+(item_list.indexOf(active_item)-1)+" item:"+active_item);
 	}
 
 function navNextPage(){
@@ -1408,5 +1408,5 @@ function navNextPage(){
 		reverse: true
 		});
 	active_item = item_list[(item_list.indexOf(active_item)+1)];
-	alert(active_item);
+	alert("index: "+(item_list.indexOf(active_item)+1)+" item:"+active_item);
 	}
