@@ -926,6 +926,11 @@ function onDeviceReady(){
 				navPreviousPage();
 				});
 
+	//Longtap event
+		jQuery(document).on("taphold", "#itemPage1, #itemPage2, #itemPage3", function(event) {
+			location.hash = "#categoryPage";
+			});
+
 	//Show page loader during page switch
 		$(document).on("pagebeforeshow", function(){
 			//spinnerShow(true);
