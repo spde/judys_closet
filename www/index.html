@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<link rel="stylesheet" href="resources/jquerymobile/themes/bomobil.min.css" />
+	<link rel="stylesheet" href="resources/jquerymobile/themes/judys_closet.min.css" />
 	<link rel="stylesheet" href="resources/jquerymobile/themes/jquery.mobile.icons.min.css" />
 	<link rel="stylesheet" href="resources/jquerymobile/jquery.mobile.structure-1.4.2.min.css" />
 	<link rel="stylesheet" href="resources/jquery/css/bomobil/jquery-ui-1.10.4.custom.min.css">
@@ -60,6 +60,12 @@ console.log('PhoneGap: '+isPhoneGap());
 			}
 		#itemPage1 .ui-content, #itemPage2 .ui-content, #itemPage3 .ui-content {
 			padding:0px;
+			}
+			
+		.imagebackground {
+			background-size: cover;
+    		background-position: center center;
+    		background-repeat: no-repeat;
 			}
 
 		/* Facebook icon */
@@ -141,19 +147,19 @@ console.log('PhoneGap: '+isPhoneGap());
 	</div>
 </div>
 
-<div data-role="page" id="itemPage1">
+<div data-role="page" id="itemPage1" class="imagebackground" data-dom-cache="true">
 	<div role="main" class="ui-content">
 		<img id='item_image1' style='height:100%'>
 	</div>
 </div>
 
-<div data-role="page" id="itemPage2">
+<div data-role="page" id="itemPage2" class="imagebackground" data-dom-cache="true">
 	<div role="main" class="ui-content">
 		<img id='item_image2' style='height:100%'>
 	</div>
 </div>
 
-<div data-role="page" id="itemPage3">
+<div data-role="page" id="itemPage3" class="imagebackground" data-dom-cache="true">
 	<div role="main" class="ui-content">
 		<img id='item_image3' style='height:100%'>
 	</div>

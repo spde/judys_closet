@@ -1392,43 +1392,43 @@ function preloadImages(curr_page_index, curr_item_index){
 	//Curr
 		curr_page = item_page_number_array[curr_page_index];
 		curr_item = image_list[curr_item_index];
-		//$("#item_image"+curr_page).attr("src", API_URL + "?function=showImage&id=" + curr_item);
+		//$("#imagePage"+curr_page+" .ui-content").css('background', 'url(' + API_URL + "?function=showImage&id=" + curr_item + ')');
+		$("#item_image"+curr_page).attr("src", API_URL + "?function=showImage&id=" + curr_item);
 	
 	//Prev
 		prev_page_index = curr_page_index-1;
-		prev_page = item_page_number_array[prev_page_index];
+		prev_page = item_page_number_array.slice(prev_page_index)[0];
 		prev_item_index = curr_item_index-1;
 		prev_item = image_list.slice(prev_item_index)[0];
+		//$("#imagePage"+prev_page).css('background', 'url(' + API_URL + "?function=showImage&id=" + prev_item + ')');
 		$("#item_image"+prev_page).attr("src", API_URL + "?function=showImage&id=" + prev_item);
-	
+		
 	//Next
 		next_page_index = (curr_page_index+1) > (item_page_number_array.length-1) ? 0 : (curr_page_index+1);
 		next_page = item_page_number_array[next_page_index];
 		next_item_index = (curr_item_index+1) > (item_list.length-1) ? 0 : (curr_item_index+1);
 		next_item = item_list[next_item_index]
+		//$("#imagePage"+next_page).css('background-image', 'url("' + API_URL + "?function=showImage&id=" + next_item + '")');
 		$("#item_image"+next_page).attr("src", API_URL + "?function=showImage&id=" + next_item);
 
 	}
 
 function navPreviousPage(){
 	page_index = item_page_number_array.indexOf(active_item_page_number)-1;
-	active_item_page_number = item_page_number_array[page_index];
-	console.log("#itemPage" + item_page_number_array.slice(page_index)[0]);
+	active_item_page_number = item_page_number_array.slice(page_index)[0];
 	$(":mobile-pagecontainer").pagecontainer("change", "#itemPage" + item_page_number_array.slice(page_index)[0], {
 		transition: "slide",
 		reverse: true,
 		});
 	item_index = item_list.indexOf(active_item)-1;
 	active_item = item_list.slice(item_index)[0];
-
-	preloadImages(page_index, item_index);
+	preloadImages(item_page_number_array.indexOf(active_item_page_number), item_list.indexOf(active_item));
 	}
 
 function navNextPage(){
 	page_index = item_page_number_array.indexOf(active_item_page_number)+1;
 	page_index = page_index > (item_page_number_array.length-1) ? 0 : page_index;
 	active_item_page_number = item_page_number_array[page_index];
-	console.log("#itemPage"+item_page_number_array[page_index]);
 	$(":mobile-pagecontainer").pagecontainer("change", "#itemPage"+item_page_number_array[page_index], {
 		transition: "slide",
 		});
@@ -1436,5 +1436,5 @@ function navNextPage(){
 	item_index = item_index > (item_list.length-1) ? 0 : item_index;
 	active_item = item_list[item_index];
 
-	preloadImages(page_index, item_index);
+	preloadImages(item_page_number_array.indexOf(active_item_page_number), item_list.indexOf(active_item));
 	}
