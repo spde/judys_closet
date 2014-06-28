@@ -1065,7 +1065,7 @@ function uploadImage(source){
 				destinationType: Camera.DestinationType.FILE_URI,
 				encodingType: Camera.EncodingType.JPEG,
 				targetWidth: $(window).width(),
-				//targetHeight: $(window).height(),
+				targetHeight: $(window).height()+40,
 				saveToPhotoAlbum: false,
 				});
 		
