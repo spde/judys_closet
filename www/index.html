@@ -47,7 +47,7 @@ console.log('PhoneGap: '+isPhoneGap());
 			}
 			
 		.ui-dialog-contain {
-			padding-top: 20px;
+			margin-top: 20px;
 			}
 		
 		label {
@@ -69,7 +69,7 @@ console.log('PhoneGap: '+isPhoneGap());
 			font-weight: bold;
 			}
 		#itemPage1 .ui-content, #itemPage2 .ui-content, #itemPage3 .ui-content {
-			padding:0px;
+			margin-top:20px;
 			}
 			
 		.imagebackground {
@@ -105,7 +105,7 @@ console.log('PhoneGap: '+isPhoneGap());
 <body>
 
 <div data-role="page" id="startPage">
-	<div role="main" class="ui-content" style='padding-top: 20px;'>
+	<div role="main" class="ui-content" style='margin-top: 20px;'>
 		<ul id="categories" data-role="listview" data-inset="true">
 		</ul>
 		<a href="#addCategory" class="ui-shadow ui-btn ui-corner-all" data-transition="pop">Add new category</a>
@@ -121,7 +121,7 @@ console.log('PhoneGap: '+isPhoneGap());
 </div>
 
 <div data-role="page" id="categoryPage">
-	<div role="main" class="ui-content" style='padding-top: 20px;'>
+	<div role="main" class="ui-content" style='margin-top: 20px;'>
 		<a onclick="addItem()" class="ui-shadow ui-btn ui-corner-all" data-transition="pop">Add new item</a>
 		<a onclick="showItems()" class="ui-shadow ui-btn ui-corner-all" data-transition="pop">Show items</a>
 		<ul id="items" data-role="listview" data-inset="true">

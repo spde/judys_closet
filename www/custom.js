@@ -933,7 +933,14 @@ function onDeviceReady(){
 			$(":mobile-pagecontainer").pagecontainer("change", "#categoryPage", {
 				transition: "slideup",
 				});
-			//location.hash = "#categoryPage";
+			location.hash = "#categoryPage";
+			});
+			
+		jQuery(document).on("longtap", "#itemPage1, #itemPage2, #itemPage3", function(event) {
+			/*$(":mobile-pagecontainer").pagecontainer("change", "#categoryPage", {
+				transition: "slideup",
+				});*/
+			location.hash = "#categoryPage";
 			});
 
 
