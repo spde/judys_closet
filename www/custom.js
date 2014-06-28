@@ -900,8 +900,10 @@ function onDeviceReady(){
 				active_item = null;
 				$("#attributes").empty();
 				$("#imagePreview").empty();
-				$("<input>").attr("type", "button").val("Camera").click(function(){uploadImage(1)}).button().appendTo($("#imagePreview"));
-				$("<input>").attr("type", "button").val("Choose existing").click(function(){if (isPhoneGap()) {uploadImage(0)} else {$('#imageFile').click()}}).button().appendTo($("#imagePreview"));
+				camera_btn = $("<input>").attr("type", "button").val("Camera").click(function(){uploadImage(1)}).button().appendTo($("#imagePreview"));
+				camera_btn.button();
+				choose_existing_button = $("<input>").attr("type", "button").val("Choose existing").click(function(){if (isPhoneGap()) {uploadImage(0)} else {$('#imageFile').click()}}).appendTo($("#imagePreview"));
+				choose_existing_button.button();
 			});
 
 		
@@ -925,11 +927,12 @@ function onDeviceReady(){
 			$(document).on("swiperight", "#itemPage1, #itemPage2, #itemPage3", function(event) {
 				navPreviousPage();
 				});
-
+				
 	//Longtap event
 		jQuery(document).on("taphold", "#itemPage1, #itemPage2, #itemPage3", function(event) {
 			location.hash = "#categoryPage";
 			});
+
 
 	//Show page loader during page switch
 		$(document).on("pagebeforeshow", function(){
@@ -1057,12 +1060,12 @@ function uploadImage(source){
 		
 		//Take new picture
 			navigator.camera.getPicture(onSuccess, onFail, {
-				quality: 30, 
+				quality: 50, 
 				sourceType: source,
 				destinationType: Camera.DestinationType.FILE_URI,
 				encodingType: Camera.EncodingType.JPEG,
-				targetWidth: $(window).width(),
-				targetHeight: $(window).height(),
+				//targetWidth: $(window).width(),
+				//targetHeight: $(window).height(),
 				saveToPhotoAlbum: false,
 				});
 		

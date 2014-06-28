@@ -40,6 +40,12 @@ console.log('PhoneGap: '+isPhoneGap());
 			active_item = null;
 	</script>
 	<style>
+	
+		/* Disable user selection */
+		*:not(input):not(textarea) {
+			-webkit-user-select: none;
+			}
+		
 		label {
 			font-weight: bold;
 			}
