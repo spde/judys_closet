@@ -900,7 +900,7 @@ function onDeviceReady(){
 				active_item = null;
 				$("#attributes").empty();
 				$("#imagePreview").empty();
-				camera_btn = $("<input>").attr("type", "button").val("Camera").click(function(){uploadImage(1)}).button().appendTo($("#imagePreview"));
+				camera_btn = $("<input>").attr("type", "button").val("Camera").click(function(){uploadImage(1)}).appendTo($("#imagePreview"));
 				camera_btn.button();
 				choose_existing_button = $("<input>").attr("type", "button").val("Choose existing").click(function(){if (isPhoneGap()) {uploadImage(0)} else {$('#imageFile').click()}}).appendTo($("#imagePreview"));
 				choose_existing_button.button();
@@ -1064,7 +1064,7 @@ function uploadImage(source){
 				sourceType: source,
 				destinationType: Camera.DestinationType.FILE_URI,
 				encodingType: Camera.EncodingType.JPEG,
-				//targetWidth: $(window).width(),
+				targetWidth: $(window).width(),
 				//targetHeight: $(window).height(),
 				saveToPhotoAlbum: false,
 				});
