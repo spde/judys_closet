@@ -928,9 +928,12 @@ function onDeviceReady(){
 				navPreviousPage();
 				});
 				
-	//Longtap event
-		jQuery(document).on("taphold", "#itemPage1, #itemPage2, #itemPage3", function(event) {
-			location.hash = "#categoryPage";
+	//slideup event
+		jQuery(document).on("swipeup", "#itemPage1, #itemPage2, #itemPage3", function(event) {
+			$(":mobile-pagecontainer").pagecontainer("change", "#categoryPage", {
+				transition: "slideup",
+				});
+			//location.hash = "#categoryPage";
 			});
 
 
