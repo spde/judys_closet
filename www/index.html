@@ -45,6 +45,10 @@ console.log('PhoneGap: '+isPhoneGap());
 		*:not(input):not(textarea) {
 			-webkit-user-select: none;
 			}
+			
+		.ui-dialog-contain {
+			padding-top: 20px;
+			}
 		
 		label {
 			font-weight: bold;
@@ -101,7 +105,7 @@ console.log('PhoneGap: '+isPhoneGap());
 <body>
 
 <div data-role="page" id="startPage">
-	<div role="main" class="ui-content">
+	<div role="main" class="ui-content" style='padding-top: 20px;'>
 		<ul id="categories" data-role="listview" data-inset="true">
 		</ul>
 		<a href="#addCategory" class="ui-shadow ui-btn ui-corner-all" data-transition="pop">Add new category</a>
@@ -117,7 +121,7 @@ console.log('PhoneGap: '+isPhoneGap());
 </div>
 
 <div data-role="page" id="categoryPage">
-	<div role="main" class="ui-content">
+	<div role="main" class="ui-content" style='padding-top: 20px;'>
 		<a onclick="addItem()" class="ui-shadow ui-btn ui-corner-all" data-transition="pop">Add new item</a>
 		<a onclick="showItems()" class="ui-shadow ui-btn ui-corner-all" data-transition="pop">Show items</a>
 		<ul id="items" data-role="listview" data-inset="true">
